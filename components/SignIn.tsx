@@ -29,12 +29,12 @@ function Login() {
   }
 
   return (
-    <div className="relative flex flex-col bg-black md:items-center md:justify-center md:bg-transparent">
+    <div className="absolute z-40 right-0 flex flex-col md:items-center md:justify-center md:bg-transparent">
     
       <form
         onSubmit={handleSubmit(onSubmit)}
         action=""
-        className="relative space-y-8 rounded bg-white px-6 md:mt-0 md:max-w-md md:px-14"
+        className="relative space-y-8 rounded bg-white px-6 md:mt-16 md:max-w-md md:px-14"
       >
         <h1 className="text-2xl font-semibold">Customer Login</h1>
         <p>if you are already registered, please login.</p>

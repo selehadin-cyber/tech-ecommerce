@@ -9,6 +9,7 @@ export const useAuth = () => useContext(AuthContext)
 export const AuthContextProvider = ({children}: {children: React.ReactNode}) => {
     const [user, setUser] = useState<any>(null);
     const [loading, setLoading] = useState(true);
+    const [showSignIn, setShowSignIn] = useState(false);
     
     useEffect(() => {
       const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -40,7 +41,7 @@ export const AuthContextProvider = ({children}: {children: React.ReactNode}) => 
     }
 
     return (
-        <AuthContext.Provider value={{user, logIn, signUp, logOut}}>
+        <AuthContext.Provider value={{user, logIn, signUp, logOut, showSignIn, setShowSignIn}}>
             {children}
         </AuthContext.Provider>
     )

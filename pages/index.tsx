@@ -4,8 +4,11 @@ import Image from 'next/image'
 import Banner from '../components/Banner'
 import Navbar from '../components/navbar'
 import Login from '../components/SignIn'
+import { useAuth } from '../context/AuthContext'
 
 const Home: NextPage = () => {
+  const {user ,logIn, signUp, logOut, showSignIn} = useAuth();
+  console.log(showSignIn)
   return (
     <div className="flex flex-col items-center justify-center py-2">
       <Head>
@@ -14,7 +17,7 @@ const Home: NextPage = () => {
       </Head>
 
       <Navbar />
-      <Login /> 
+      {showSignIn ? <Login />: null} 
       <div className='max-w-screen-2xl mx-auto mt-16 pt-0'>
         <Banner />
       </div>

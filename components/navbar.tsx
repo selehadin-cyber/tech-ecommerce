@@ -6,10 +6,10 @@ import logo from "./logo.png"
 
 
 const Navbar = () => {
-  const {user ,logIn, signUp, logOut} = useAuth();
+  const {user ,logIn, signUp, logOut, setShowSignIn} = useAuth();
 
   return (
-    <div className="absolute top-0 flex w-full flex-row justify-between items-center gap-5 bg-[#161880] p-2.5">
+    <div className="absolute top-0 flex w-full flex-row justify-between items-center gap-5 bg-[#161880] p-2.5 z-50">
         <div className="logo w-[140px] p-2">
             <Image src={logo} alt="logo" />
         </div>
@@ -36,7 +36,7 @@ const Navbar = () => {
         </div>
         <div className='flex flex-col justify-center items-center'>
           <BsPerson color="#fdc525" size="17px" />
-          <p className="font-dmsans text-sm text-white md:text-xl">{user ? "Sign Out" : "Sign in" }</p>
+          <p className="font-dmsans text-sm text-white md:text-xl cursor-pointer">{user ? <span onClick={logOut}>Sign Out</span> : <span onClick={() => setShowSignIn(true)}>Sign in</span> }</p>
         </div>
         <div className='flex flex-col justify-center items-center'>
           <button className='relative'>
