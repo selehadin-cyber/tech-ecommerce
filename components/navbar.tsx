@@ -1,13 +1,16 @@
 import Image from 'next/image'
 import React from 'react'
 import { BsHeart, BsPerson, BsCart3, BsSearch } from 'react-icons/bs'
+import { useAuth } from '../context/AuthContext'
 import logo from "./logo.png"
 
 
 const Navbar = () => {
+  const {user ,logIn, signUp, logOut} = useAuth();
+
   return (
     <div className="absolute top-0 flex w-full flex-row justify-between items-center gap-5 bg-[#161880] p-2.5">
-        <div className="logo w-[100px] p-2">
+        <div className="logo w-[140px] p-2">
             <Image src={logo} alt="logo" />
         </div>
       <div className="input relative hidden md:flex">
@@ -15,7 +18,7 @@ const Navbar = () => {
           type="search"
           name="search"
           id="search"
-          className="rounded-full h-6 text-xs outline-none w-52 p-3 font-light"
+          className="rounded-full h-6 md:h-10 md:text-lg text-xs outline-none w-52 p-3 font-light"
           placeholder='search the store'
         />
         <BsSearch className='absolute right-2 top-[20%]'/>
@@ -33,7 +36,7 @@ const Navbar = () => {
         </div>
         <div className='flex flex-col justify-center items-center'>
           <BsPerson color="#fdc525" size="17px" />
-          <p className="font-dmsans text-sm text-white md:text-xl">Sign In</p>
+          <p className="font-dmsans text-sm text-white md:text-xl">{user ? "Sign Out" : "Sign in" }</p>
         </div>
         <div className='flex flex-col justify-center items-center'>
           <button className='relative'>

@@ -25,7 +25,7 @@ const Banner = () => {
                 <h2>UHD Televisions</h2>
             </div>
             <p className='font-light pb-4'>Sale up to 70% off on selected items*</p>
-            <a href={"/"} className="font-bold" >
+            <a href={"/"} className="font-semibold bg-transparent hover:bg-white hover:text-black py-2 px-2 border border-white hover:border-transparent rounded-full" >
             Shop Now
             </a>
           </div>

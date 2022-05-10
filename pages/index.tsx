@@ -3,6 +3,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 import Banner from '../components/Banner'
 import Navbar from '../components/navbar'
+import Login from '../components/SignIn'
 
 const Home: NextPage = () => {
   return (
@@ -13,6 +14,7 @@ const Home: NextPage = () => {
       </Head>
 
       <Navbar />
+      <Login /> 
       <div className='max-w-screen-2xl mx-auto mt-16 pt-0'>
         <Banner />
       </div>
