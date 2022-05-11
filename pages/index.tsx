@@ -2,6 +2,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import Banner from '../components/Banner'
+import Deals from '../components/Deals'
 import Navbar from '../components/navbar'
 import Login from '../components/SignIn'
 import { useAuth } from '../context/AuthContext'
@@ -20,6 +21,7 @@ const Home: NextPage = () => {
       {showSignIn ? <Login />: null} 
       <div className='max-w-screen-2xl mx-auto mt-16 pt-0'>
         <Banner />
+        <Deals />
       </div>
     </div>
   )
