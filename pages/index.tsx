@@ -4,6 +4,7 @@ import Image from 'next/image'
 import Banner from '../components/Banner'
 import Deals from '../components/Deals'
 import Navbar from '../components/navbar'
+import ProductsGrid from '../components/ProductsGrid'
 import Login from '../components/SignIn'
 import { useAuth } from '../context/AuthContext'
 
@@ -22,6 +23,7 @@ const Home: NextPage = () => {
       <div className='max-w-screen-2xl mx-auto mt-16 pt-0'>
         <Banner />
         <Deals />
+        <ProductsGrid />
       </div>
     </div>
   )
