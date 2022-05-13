@@ -28,14 +28,7 @@ const ProductsGrid: React.FC = () => {
         regions: ['west_coast', 'norcal'],
       })
        */
-      const docRef = doc(database, 'products', 'headphone')
-      const docSnap = await getDoc(docRef)
-      if (docSnap.exists()) {
-        console.log('Document data:', docSnap.data())
-      } else {
-        // doc.data() will be undefined in this case
-        console.log('No such document!')
-      }
+      
 
       const q = query(
         collection(database, 'products'),

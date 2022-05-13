@@ -1,12 +1,12 @@
 import Image from 'next/image'
 import React from 'react'
 import { BsHeart, BsStarFill } from 'react-icons/bs'
-import { Firestore, collection, addDoc } from 'firebase/firestore'
+import { Firestore, collection, addDoc, doc, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore'
 import { useAuth } from '../context/AuthContext'
 import { database } from '../config/firebase'
 
 interface Props {
-  productData: any/* {
+  productData: any /* {
     image: string
     type: string
     price: number
@@ -17,20 +17,18 @@ interface Props {
 
 const Product: React.FC<Props> = ({ productData }) => {
   const { user, logIn, signUp, logOut, showSignIn } = useAuth()
-  const databaseRef = collection(database, 'user')
   console.log(productData)
-  const addFav = () => {
-    addDoc(databaseRef, {
-      user: user.uid,
-      favorites: [],
-      cart: [],
+  const addFav = async () => {
+    // Atomically add a new region to the "regions" array field.
+    const usersRef = doc(database, 'user', user.uid)
+    await updateDoc(usersRef, {
+      fav: arrayUnion(productData),
     })
-      .then(() => {
-        alert('data sent')
-      })
-      .catch((error) => {
-        console.error(error.message)
-      })
+
+    // Atomically remove a region from the "regions" array field.
+    /* await updateDoc(usersRef, {
+      regions: arrayRemove('east_coast'),
+    }) */
   }
 
   return (

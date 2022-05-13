@@ -1,13 +1,22 @@
 import Image from 'next/image'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { BsHeart, BsPerson, BsCart3, BsSearch } from 'react-icons/bs'
 import { useAuth } from '../context/AuthContext'
 import logo from "./logo.png"
 
 
 const Navbar = () => {
-  const {user ,logIn, signUp, logOut, setShowSignIn} = useAuth();
+  const {user ,logIn, signUp, logOut, setShowSignIn, getFavorites} = useAuth();
+ const [favorites, setFavorites] = useState([])
+  useEffect(() => {
+    const favCall = async () => {
+      await getFavorites().then((data: any) => console.log(data)) 
+      
 
+    }
+    console.log(favorites)
+  }, [])
+  
   return (
     <div className="absolute top-0 flex w-full flex-row justify-between items-center gap-5 bg-[#161880] p-2.5 z-50">
         <div className="logo w-[140px] p-2">
@@ -32,7 +41,7 @@ const Navbar = () => {
 
         <div className='flex flex-col justify-center items-center'>
           <BsHeart color="#fdc525" size="17px" />
-          <p className="font-dmsans text-sm text-white md:text-xl">Wish Lists</p>
+          <p className="font-dmsans text-sm text-white md:text-xl">Wish Lists {favorites.length}</p>
         </div>
         <div className='flex flex-col justify-center items-center'>
           <BsPerson color="#fdc525" size="17px" />
