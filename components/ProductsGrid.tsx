@@ -15,7 +15,7 @@ import Product from './Product'
 const ProductsGrid: React.FC = () => {
   const { user, logIn, signUp, logOut, setShowSignIn } = useAuth()
   const userRef = collection(database, 'products')
-  const [products, setProducts] = useState({})
+  const [products, setProducts] = useState<any[]>([])
 
   useEffect(() => {
     const base = async () => {
@@ -39,22 +39,24 @@ const ProductsGrid: React.FC = () => {
 
       const q = query(
         collection(database, 'products'),
-        where('on-sale', '==', true)
+        where('on-sale', '==', false)
       )
 
       const querySnapshot = await getDocs(q)
+      const productsArray: any[] = []
       querySnapshot.forEach((doc) => {
         // doc.data() is never undefined for query doc snapshots
-        setProducts(doc.data())
+        productsArray.push(doc.data())
         console.log(products)
       })
+      setProducts(productsArray)
     }
     base()
   }, [])
 
   return (
     <div>
-      <Product productData={products}/>
+      {products && products.map((product, idx) => <Product key={product.name} productData={product}/>)}
       {JSON.stringify(products)}
     </div>
   )

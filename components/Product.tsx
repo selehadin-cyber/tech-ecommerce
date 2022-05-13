@@ -48,9 +48,9 @@ const Product: React.FC<Props> = ({ productData }) => {
           <BsStarFill key={id} color="yellow" />
         ))}
       </div>
-      <p>Asus zenfone p3</p>
+      <p>{productData.name}</p>
       <p>
-        <del>56TL</del> from 49TL
+        <del>56TL</del> from {productData.price}
       </p>
       <button
         type="button"
