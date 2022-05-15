@@ -1,20 +1,39 @@
+import { doc, getDoc } from 'firebase/firestore'
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import { BsHeart, BsPerson, BsCart3, BsSearch } from 'react-icons/bs'
+import { database } from '../config/firebase'
 import { useAuth } from '../context/AuthContext'
 import logo from "./logo.png"
 
 
 const Navbar = () => {
-  const {user ,logIn, signUp, logOut, setShowSignIn, getFavorites} = useAuth();
- const [favorites, setFavorites] = useState([])
-  useEffect(() => {
-    const favCall = async () => {
-      await getFavorites().then((data: any) => console.log(data)) 
-      
+  const {user ,logIn, signUp, logOut, setShowSignIn} = useAuth();
+  const [favorites, setFavorites] = useState([])
 
+  useEffect(() => {
+    
+    const getFavorites = async () => {
+      const docRef = doc(database, 'user', user?.uid)!
+      const userSnap = await getDoc(docRef)
+  
+      if (userSnap.exists()) {
+        console.log(userSnap.get("fav"))
+        setFavorites(userSnap.get("fav"))
+      } else {
+        // doc.data() will be undefined in this case
+        console.log('No such document!')
+      }
     }
-    console.log(favorites)
+    getFavorites()
+    
+  }, [])
+  
+  
+
+
+  useEffect(() => {
+    
   }, [])
   
   return (
