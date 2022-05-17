@@ -14,9 +14,9 @@ const Navbar = () => {
   useEffect(() => {
     
     const getFavorites = async () => {
-      const docRef = doc(database, 'user', user?.uid)!
+     if (user) { const docRef = doc(database, 'user', user?.uid)!
       const userSnap = await getDoc(docRef)
-  
+    
       if (userSnap.exists()) {
         console.log(userSnap.get("fav"))
         setFavorites(userSnap.get("fav"))
@@ -24,17 +24,13 @@ const Navbar = () => {
         // doc.data() will be undefined in this case
         console.log('No such document!')
       }
+    }else {console.log("user not found")}
+  
     }
     getFavorites()
     
   }, [])
   
-  
-
-
-  useEffect(() => {
-    
-  }, [])
   
   return (
     <div className="absolute top-0 flex w-full flex-row justify-between items-center gap-5 bg-[#161880] p-2.5 z-50">

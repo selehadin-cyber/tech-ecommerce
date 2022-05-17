@@ -9,11 +9,13 @@ import {
 import { auth, database } from '../config/firebase'
 import {
   addDoc,
+  arrayUnion,
   collection,
   doc,
   getDoc,
   serverTimestamp,
   setDoc,
+  updateDoc,
 } from 'firebase/firestore'
 import { useCollection } from 'react-firebase-hooks/firestore'
 
@@ -78,9 +80,23 @@ export const AuthContextProvider = ({
       console.log('No such document!')
     }
   }
+
+  const addFav = async ( productData: any) => {
+    // Atomically add a new region to the "regions" array field.
+    const usersRef = doc(database, 'user', user.uid)
+    await updateDoc(usersRef, {
+      fav: arrayUnion(productData),
+    })
+
+    // Atomically remove a region from the "regions" array field.
+    /* await updateDoc(usersRef, {
+      regions: arrayRemove('east_coast'),
+    }) */
+  }
+
   return (
     <AuthContext.Provider
-      value={{ user, logIn, signUp, logOut, showSignIn, setShowSignIn, getFavorites }}
+      value={{ user, logIn, signUp, logOut, showSignIn, setShowSignIn, getFavorites, addFav }}
     >
       {children}
     </AuthContext.Provider>
