@@ -4,6 +4,7 @@ import { BsHeart, BsStarFill } from 'react-icons/bs'
 import { Firestore, collection, addDoc, doc, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore'
 import { useAuth } from '../context/AuthContext'
 import { database } from '../config/firebase'
+import Link from 'next/link'
 
 interface Props {
   productData: any /* {
@@ -33,36 +34,39 @@ const Product: React.FC<Props> = ({ productData }) => {
 
   return (
     <div className="flex flex-col items-center justify-center gap-3">
-      <img
-        src={productData?.image}
-        className="rounded-sm object-cover md:rounded"
-        /* layout="fill" */
-        width={250}
-        height={250}
-      />
-
-      <div className="flex">
-        {[1, 2, 3, 4].map((star, id) => (
-          <BsStarFill key={id} color="yellow" />
-        ))}
-      </div>
-      <p>{productData.name}</p>
-      <p>
-        <del>56TL</del> from {productData.price}
-      </p>
-      <button
-        type="button"
-        className="mr-2 mb-2 rounded-full bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-      >
-        Add to Cart
-      </button>
-      <button
-        onClick={addFav}
-        type="button"
-        className="h-10 w-10 rounded-full bg-gray-300"
-      >
-        <BsHeart className="m-auto" />
-      </button>
+      <Link href={`/products/${productData.name}`}>
+        <div>
+          <img
+            src={productData?.image}
+            className="rounded-sm object-cover md:rounded"
+            /* layout="fill" */
+            width={250}
+            height={250}
+          />
+          <div className="flex">
+            {[1, 2, 3, 4].map((star, id) => (
+              <BsStarFill key={id} color="yellow" />
+            ))}
+          </div>
+          <p>{productData.name}</p>
+          <p>
+            <del>56TL</del> from {productData.price}
+          </p>
+        </div>
+      </Link>
+          <button
+            type="button"
+            className="mr-2 mb-2 rounded-full bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          >
+            Add to Cart
+          </button>
+          <button
+            onClick={addFav}
+            type="button"
+            className="h-10 w-10 rounded-full bg-gray-300"
+          >
+            <BsHeart className="m-auto" />
+          </button>
     </div>
   )
 }

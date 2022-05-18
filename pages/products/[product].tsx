@@ -1,19 +1,21 @@
 import {
+  arrayUnion,
   collection,
   doc,
   getDoc,
   getDocs,
   query,
+  updateDoc,
   where,
 } from 'firebase/firestore'
-import Rating from '@mui/material/Rating';
+import Rating from '@mui/material/Rating'
 import { GetStaticProps } from 'next'
 import { ParsedUrlQuery } from 'querystring'
 import React, { useState } from 'react'
 import { BsHeart } from 'react-icons/bs'
-import { database } from '../config/firebase'
-import { useAuth } from '../context/AuthContext'
-import { TextField } from '@mui/material';
+import { database } from '../../config/firebase'
+import { useAuth } from '../../context/AuthContext'
+import { TextField } from '@mui/material'
 
 interface IParams extends ParsedUrlQuery {
   product: string
@@ -28,14 +30,35 @@ export interface PageProps {
   }
 }
 const ProductPage: React.FC<PageProps> = ({ singleProduct }) => {
-  const [value, setValue] = useState<number | null>(2);
-  const [review, setReview] = useState("review")
-  const { addFav } = useAuth()
-  return <>
-  <img  src={singleProduct?.image} alt="product-image" />
-  <h1 className='font-bold text-xl text-center'>{singleProduct?.name}</h1>
-  <p>{singleProduct?.price} TL</p>
-  <button
+  const [value, setValue] = useState<number | null>(2)
+  const [review, setReview] = useState('review')
+  const { addFav, user } = useAuth()
+
+  const addReview = async (product: any, star: number | null, review: string) => {
+    // Atomically add a new region to the "regions" array field.
+    const userUid = user.uid
+    const usersRef = doc(database, 'products', product.name)
+    await updateDoc(usersRef, {
+      reviews: arrayUnion({
+        [userUid]: {
+          star: star,
+          review: review,
+        },
+      }),
+    })
+
+    // Atomically remove a region from the "regions" array field.
+    /* await updateDoc(usersRef, {
+      regions: arrayRemove('east_coast'),
+    }) */
+  }
+
+  return (
+    <>
+      <img src={singleProduct?.image} alt="product-image" />
+      <h1 className="text-center text-xl font-bold">{singleProduct?.name}</h1>
+      <p>{singleProduct?.price} TL</p>
+      <button
         type="button"
         className="mr-2 mb-2 rounded-full bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
       >
@@ -52,26 +75,28 @@ const ProductPage: React.FC<PageProps> = ({ singleProduct }) => {
         name="simple-controlled"
         value={value}
         onChange={(event, newValue) => {
-          setValue(newValue);
+          setValue(newValue)
         }}
       />
       <TextField
-          id="outlined-multiline-static"
-          label="Multiline"
-          multiline
-          rows={4}
-          defaultValue="Default Value"
-          value={review}
-          onChange={(e) => setReview(e.target.value)}
-        />
-        <button
-          type="submit"
-          className="w-full rounded bg-[#0a6cdc] py-3 font-semibold"
-          onClick={() => setReview("true")}
-        >
-          Sign In
-        </button>
-  </>
+        id="outlined-multiline-static"
+        label="Multiline"
+        multiline
+        rows={4}
+        value={review}
+        onChange={(e) => setReview(e.target.value)}
+      />
+      <button
+        type="submit"
+        className="w-full rounded bg-[#0a6cdc] py-3 font-semibold"
+        onClick={() => {
+          addReview(singleProduct, value, review)
+        }}
+      >
+        Sign In
+      </button>
+    </>
+  )
 }
 export const getStaticPaths = async () => {
   const q = query(collection(database, 'products'))
