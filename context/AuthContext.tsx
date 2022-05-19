@@ -48,11 +48,12 @@ export const AuthContextProvider = ({
     return () => unsubscribe()
   }, [])
 
-  const signUp = (email: string, password: string) => {
-    return createUserWithEmailAndPassword(auth, email, password).then(
+  const signUp = (email: string, password: string, displayName: string) => {
+    return createUserWithEmailAndPassword(auth, email, password, ).then(
       (cred) => {
         {
           setDoc(doc(database, 'user', cred.user.uid), {
+            userName: displayName,
             fav: [],
           })
         }
