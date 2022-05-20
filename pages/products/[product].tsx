@@ -27,6 +27,7 @@ export interface PageProps {
     type: string
     name: string
     image: string
+    reviews: any[]
   }
 }
 const ProductPage: React.FC<PageProps> = ({ singleProduct }) => {
@@ -34,7 +35,11 @@ const ProductPage: React.FC<PageProps> = ({ singleProduct }) => {
   const [review, setReview] = useState('review')
   const { addFav, user } = useAuth()
 
-  const addReview = async (product: any, star: number | null, review: string) => {
+  const addReview = async (
+    product: any,
+    star: number | null,
+    review: string
+  ) => {
     // Atomically add a new region to the "regions" array field.
     const userUid = user.uid
     const usersRef = doc(database, 'products', product.name)
@@ -93,8 +98,22 @@ const ProductPage: React.FC<PageProps> = ({ singleProduct }) => {
           addReview(singleProduct, value, review)
         }}
       >
-        Sign In
+        Submit
       </button>
+      <h2>Reviews</h2>
+      {singleProduct?.reviews.map((review) =>
+        Object.values(review).map((review: any) => (
+          <>
+            <p>stars: {review.star}</p>
+            <Rating
+              name="read-only"
+              value={review.star}
+              readOnly
+            />
+            <p>review: {review.review}</p>
+          </>
+        ))
+      )}
     </>
   )
 }
