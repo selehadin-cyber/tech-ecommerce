@@ -32,8 +32,24 @@ export interface PageProps {
 }
 const ProductPage: React.FC<PageProps> = ({ singleProduct }) => {
   const [value, setValue] = useState<number | null>(2)
+  const [title, setTitle] = useState("")
   const [review, setReview] = useState('review')
   const { addFav, user } = useAuth()
+
+  const getUserName = async () => {
+    if (user) { const docRef = doc(database, 'user', user?.uid)!
+      const userSnap = await getDoc(docRef)
+    
+      if (userSnap.exists()) {
+        return userSnap.get("userName")
+      } else {
+        // doc.data() will be undefined in this case
+        console.log('No such document!')
+      }
+    }else {console.log("user not found")}
+  
+    }
+  
 
   const addReview = async (
     product: any,
@@ -41,13 +57,16 @@ const ProductPage: React.FC<PageProps> = ({ singleProduct }) => {
     review: string
   ) => {
     // Atomically add a new region to the "regions" array field.
+    const Name = await getUserName();
     const userUid = user.uid
     const usersRef = doc(database, 'products', product.name)
     await updateDoc(usersRef, {
       reviews: arrayUnion({
-        [userUid]: {
+        [Name]: {
           star: star,
+          title: title,
           review: review,
+          name: Name
         },
       }),
     })
@@ -85,7 +104,15 @@ const ProductPage: React.FC<PageProps> = ({ singleProduct }) => {
       />
       <TextField
         id="outlined-multiline-static"
-        label="Multiline"
+        label="Title"
+        multiline
+        rows={4}
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+      />
+      <TextField
+        id="outlined-multiline-static"
+        label="Comment"
         multiline
         rows={4}
         value={review}
@@ -104,7 +131,8 @@ const ProductPage: React.FC<PageProps> = ({ singleProduct }) => {
       {singleProduct?.reviews.map((review) =>
         Object.values(review).map((review: any) => (
           <>
-            <p>stars: {review.star}</p>
+            <h2 className='font-bold'>{review.title}</h2>
+            <p className='text-sm'>{review.name}</p>
             <Rating
               name="read-only"
               value={review.star}
