@@ -2,6 +2,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import Banner from '../components/Banner'
+import Cart from '../components/Cart'
 import Deals from '../components/Deals'
 import Navbar from '../components/navbar'
 import ProductsGrid from '../components/ProductsGrid'
@@ -24,6 +25,7 @@ const Home: NextPage = () => {
         <Banner />
         <Deals />
         <ProductsGrid />
+        <Cart />
       </div>
     </div>
   )

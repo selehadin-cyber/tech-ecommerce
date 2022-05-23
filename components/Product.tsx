@@ -18,6 +18,8 @@ interface Props {
 
 const Product: React.FC<Props> = ({ productData }) => {
   const { user, logIn, signUp, logOut, showSignIn } = useAuth()
+  const {cart, setCart} = useAuth();
+
   console.log(productData)
   const addFav = async () => {
     // Atomically add a new region to the "regions" array field.
@@ -57,6 +59,7 @@ const Product: React.FC<Props> = ({ productData }) => {
           <button
             type="button"
             className="mr-2 mb-2 rounded-full bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            onClick={() => setCart([...cart! , productData])}
           >
             Add to Cart
           </button>

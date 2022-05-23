@@ -31,7 +31,7 @@ export const AuthContextProvider = ({
   const [user, setUser] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [showSignIn, setShowSignIn] = useState(false)
-
+  const [Cart, setCart] = useState<any[]>([])
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -97,7 +97,7 @@ export const AuthContextProvider = ({
 
   return (
     <AuthContext.Provider
-      value={{ user, logIn, signUp, logOut, showSignIn, setShowSignIn, getFavorites, addFav }}
+      value={{ user, logIn, signUp, logOut, showSignIn, setShowSignIn, getFavorites, addFav, Cart, setCart }}
     >
       {children}
     </AuthContext.Provider>

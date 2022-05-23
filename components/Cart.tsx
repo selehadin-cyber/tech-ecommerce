@@ -1,9 +1,12 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useAuth } from '../context/AuthContext'
 
 const Cart = () => {
-  return (
-    <div>Cart</div>
-  )
+  const { cart, setCart } = useAuth()
+
+  console.log(cart)
+
+  return <div>{JSON.stringify(cart)}</div>
 }
 
 export default Cart
