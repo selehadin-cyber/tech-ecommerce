@@ -34,7 +34,8 @@ const ProductPage: React.FC<PageProps> = ({ singleProduct }) => {
   const [value, setValue] = useState<number | null>(2)
   const [title, setTitle] = useState("")
   const [review, setReview] = useState('review')
-  const { addFav, user } = useAuth()
+  const { addFav, user, onAdd } = useAuth()
+  const [qty, setQty] = useState(1)
 
   const getUserName = async () => {
     if (user) { const docRef = doc(database, 'user', user?.uid)!
@@ -85,9 +86,11 @@ const ProductPage: React.FC<PageProps> = ({ singleProduct }) => {
       <button
         type="button"
         className="mr-2 mb-2 rounded-full bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        onClick={() => onAdd(singleProduct, qty)}
       >
         Add to Cart
       </button>
+      <input className="" name="quantity" value={qty} type="number" onChange={(e) => setQty(parseInt(e.target.value))}/>
       <button
         onClick={() => addFav(singleProduct)}
         type="button"

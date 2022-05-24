@@ -6,14 +6,15 @@ import { useAuth } from '../context/AuthContext'
 import { database } from '../config/firebase'
 import Link from 'next/link'
 
-interface Props {
-  productData: any /* {
+export type Props = {
+  productData: any 
     image: string
     type: string
     price: number
     "on-sale": boolean
     name: string
-  } */
+    quantity: number
+  
 }
 
 const Product: React.FC<Props> = ({ productData }) => {
@@ -59,7 +60,7 @@ const Product: React.FC<Props> = ({ productData }) => {
           <button
             type="button"
             className="mr-2 mb-2 rounded-full bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            onClick={() => setCart([...cart! , productData])}
+            onClick={() => setCart([...cart , productData])}
           >
             Add to Cart
           </button>

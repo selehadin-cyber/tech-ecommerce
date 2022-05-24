@@ -8,7 +8,7 @@ import logo from "./logo.png"
 
 
 const Navbar = () => {
-  const {user ,logIn, signUp, logOut, setShowSignIn} = useAuth();
+  const {user ,logIn, signUp, logOut, setShowSignIn, totalQuantities} = useAuth();
   const [favorites, setFavorites] = useState([])
 
   useEffect(() => {
@@ -65,7 +65,7 @@ const Navbar = () => {
         <div className='flex flex-col justify-center items-center'>
           <button className='relative'>
               <BsCart3 color="#fdc525" size="17px" />
-              <span className='absolute text-[10px] text-white -right-2 -top-1.5 bg-[#0a6cdc] w-4 h-4 rounded-full text-center font-semibold'>0</span>
+              <span className='absolute text-[10px] text-white -right-2 -top-1.5 bg-[#0a6cdc] w-4 h-4 rounded-full text-center font-semibold'>{totalQuantities}</span>
           </button>
           <p className="font-dmsans text-sm text-white md:text-xl">Carts</p>
         </div>

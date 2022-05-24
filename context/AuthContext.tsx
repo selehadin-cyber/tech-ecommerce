@@ -18,6 +18,7 @@ import {
   updateDoc,
 } from 'firebase/firestore'
 import { useCollection } from 'react-firebase-hooks/firestore'
+import { Props } from '../components/Product'
 
 const AuthContext = createContext<any>({})
 
@@ -31,7 +32,9 @@ export const AuthContextProvider = ({
   const [user, setUser] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [showSignIn, setShowSignIn] = useState(false)
-  const [Cart, setCart] = useState<any[]>([])
+  const [cart, setCart] = useState<any[]>([])
+  const [totalPrice, setTotalPrice] = useState(1)
+  const [totalQuantities, setTotalQuantities] = useState(0)
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -95,9 +98,18 @@ export const AuthContextProvider = ({
     }) */
   }
 
+  const onAdd = (product: Props, quantity: number) => {
+    const checkProductInCart = cart.find((item: Props) => item.name === product.name)
+    console.log(checkProductInCart)
+    setTotalPrice((prev) => prev + product.price * quantity)
+    setTotalQuantities((prev) => prev + quantity);
+    product.quantity = quantity;
+    setCart([...cart, { ...product }] as any);
+  }
+
   return (
     <AuthContext.Provider
-      value={{ user, logIn, signUp, logOut, showSignIn, setShowSignIn, getFavorites, addFav, Cart, setCart }}
+      value={{ user, logIn, signUp, logOut, showSignIn, setShowSignIn, getFavorites, addFav, cart, setCart, onAdd, totalPrice, totalQuantities }}
     >
       {children}
     </AuthContext.Provider>
