@@ -35,6 +35,9 @@ export const AuthContextProvider = ({
   const [cart, setCart] = useState<any[]>([])
   const [totalPrice, setTotalPrice] = useState(1)
   const [totalQuantities, setTotalQuantities] = useState(0)
+
+  let foundProduct: any;
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -52,7 +55,7 @@ export const AuthContextProvider = ({
   }, [])
 
   const signUp = (email: string, password: string, displayName: string) => {
-    return createUserWithEmailAndPassword(auth, email, password, ).then(
+    return createUserWithEmailAndPassword(auth, email, password).then(
       (cred) => {
         {
           setDoc(doc(database, 'user', cred.user.uid), {
@@ -78,14 +81,14 @@ export const AuthContextProvider = ({
     const userSnap = await getDoc(docRef)
 
     if (userSnap.exists()) {
-      console.log('Document data:', userSnap.get("fav"))
+      console.log('Document data:', userSnap.get('fav'))
     } else {
       // doc.data() will be undefined in this case
       console.log('No such document!')
     }
   }
 
-  const addFav = async ( productData: any) => {
+  const addFav = async (productData: any) => {
     // Atomically add a new region to the "regions" array field.
     const usersRef = doc(database, 'user', user.uid)
     await updateDoc(usersRef, {
@@ -99,17 +102,72 @@ export const AuthContextProvider = ({
   }
 
   const onAdd = (product: Props, quantity: number) => {
-    const checkProductInCart = cart.find((item: Props) => item.name === product.name)
+    const checkProductInCart = cart.find(
+      (item: Props) => item.name === product.name
+    )
     console.log(checkProductInCart)
     setTotalPrice((prev) => prev + product.price * quantity)
-    setTotalQuantities((prev) => prev + quantity);
-    product.quantity = quantity;
-    setCart([...cart, { ...product }] as any);
+    setTotalQuantities((prev) => prev + quantity)
+    //TODO : prevent adding the same product as separate product in cart
+    if (checkProductInCart) {
+      const updatedCartItems = cart.map((cartProduct: any) => {
+        if (cartProduct.name === product.name)
+          return {
+            ...cartProduct,
+            quantity: cartProduct.quantity + quantity,
+          };
+      });
+      setCart(updatedCartItems);
+    } else {
+      product.quantity = quantity;
+      setCart([...cart, { ...product }]);
+    }
+  }
+
+  const toggleCartItemQuantity = (name: string, value: string) => {
+    foundProduct = cart.find((item) => item.name === name)
+    if (value === 'add') {
+      setCart(
+        cart.map((item, i) =>
+          item.name === name
+            ? { ...foundProduct, quantity: foundProduct.quantity + 1 }
+            : item
+        )
+      )
+      setTotalPrice((prev) => prev + foundProduct.price)
+      setTotalQuantities((prev) => prev + 1)
+    } else if (value === 'dec') {
+      setCart(
+        cart.map((item, i) =>
+          item.name === name
+            ? { ...foundProduct, quantity: foundProduct.quantity - 1 }
+            : item
+        )
+      )
+
+      setTotalPrice((prev) => prev - foundProduct.price)
+      setTotalQuantities((prev) => prev - 1)
+    }
   }
 
   return (
     <AuthContext.Provider
-      value={{ user, logIn, signUp, logOut, showSignIn, setShowSignIn, getFavorites, addFav, cart, setCart, onAdd, totalPrice, totalQuantities }}
+      value={{
+        user,
+        logIn,
+        signUp,
+        logOut,
+        showSignIn,
+        setShowSignIn,
+        getFavorites,
+        addFav,
+        cart,
+        setCart,
+        onAdd,
+        totalPrice,
+        totalQuantities,
+        toggleCartItemQuantity,
+      }}
     >
       {children}
     </AuthContext.Provider>

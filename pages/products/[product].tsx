@@ -16,6 +16,7 @@ import { BsHeart } from 'react-icons/bs'
 import { database } from '../../config/firebase'
 import { useAuth } from '../../context/AuthContext'
 import { TextField } from '@mui/material'
+import Image from 'next/image'
 
 interface IParams extends ParsedUrlQuery {
   product: string
@@ -61,6 +62,7 @@ const ProductPage: React.FC<PageProps> = ({ singleProduct }) => {
     const Name = await getUserName();
     const userUid = user.uid
     const usersRef = doc(database, 'products', product.name)
+    console.log(Name)
     await updateDoc(usersRef, {
       reviews: arrayUnion({
         [Name]: {
@@ -80,7 +82,8 @@ const ProductPage: React.FC<PageProps> = ({ singleProduct }) => {
 
   return (
     <>
-      <img src={singleProduct?.image} alt="product-image" />
+{/*       <img src={singleProduct?.image} alt="product-image" />
+ */}      <Image src={singleProduct?.image as string} width={250} height={250}></Image>
       <h1 className="text-center text-xl font-bold">{singleProduct?.name}</h1>
       <p>{singleProduct?.price} TL</p>
       <button

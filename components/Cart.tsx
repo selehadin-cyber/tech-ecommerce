@@ -1,17 +1,37 @@
 import React, { useEffect, useState } from 'react'
+import getStripe from '../config/getStripe'
 import { useAuth } from '../context/AuthContext'
 
 type Cart = {
   image: string
   name: string
   price: string
+  quantity: number
 }
 
 const Cart = () => {
-  const { cart, setCart, totalPrice } = useAuth()
+  const { cart, setCart, totalPrice, toggleCartItemQuantity } = useAuth()
   const [qty, setQty] = useState(1)
 
   console.log(cart)
+
+  const handleCheckout = async () => {
+    const stripe = await getStripe();
+
+    const response = await fetch('/api/stripe', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(cart)
+    });
+
+    if(response.status === 500) return;
+    
+    const data = await response.json();
+    console.log(data.id)
+    stripe.redirectToCheckout({ sessionId: data.id });
+  }
 
   return <div>
     <div>
@@ -26,11 +46,14 @@ const Cart = () => {
             />
             <p>{product.name}</p>
             <p>{product.price}</p>
-            <input className="" name="quantity" value={qty} type="number" onChange={(e) => setQty(parseInt(e.target.value))}/>
+            <span className="font-bold">quantity from product object {product.quantity}</span>
+            <button onClick={() => toggleCartItemQuantity(product.name, "add")}>inc</button><br/>
+            <button onClick={() => toggleCartItemQuantity(product.name, "dec")}>dec</button>
       </div>
     ))}
     </div>
     <p>total : {totalPrice}</p>
+    <button className='bg-gray-700 text-white' onClick={handleCheckout}>Proceed to checkout</button>
   </div>
 }
 
