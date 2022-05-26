@@ -13,7 +13,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 
-function Copyright(props) {
+function Copyright(props: any) {
   
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -36,7 +36,7 @@ export default function SignUp() {
 
   const {signUp} = useAuth();
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: any) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({

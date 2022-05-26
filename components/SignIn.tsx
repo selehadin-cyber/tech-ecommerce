@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useAuth } from '../context/AuthContext'
@@ -29,7 +30,7 @@ function Login() {
   }
 
   return (
-    <div className="absolute z-40 right-0 flex flex-col md:items-center md:justify-center md:bg-transparent">
+    <div className="absolute z-40 right-0 top-10 flex flex-col md:items-center md:justify-center md:bg-transparent">
     
       <form
         onSubmit={handleSubmit(onSubmit)}
@@ -77,8 +78,8 @@ function Login() {
           Sign In
         </button>
         <div className="text-[gray]">
-          New to Netflix?{' '}
-          <button onClick={() => setLogin(false)} className="hover:underline">Sign Up Now</button>
+          New to Ihsan Store?{' '}
+          <Link href={"/SignUp"}><button className="hover:underline">Sign Up Now</button></Link>
         </div>
       </form>
     </div>

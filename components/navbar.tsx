@@ -1,5 +1,6 @@
 import { doc, getDoc } from 'firebase/firestore'
 import Image from 'next/image'
+import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import { BsHeart, BsPerson, BsCart3, BsSearch } from 'react-icons/bs'
 import { database } from '../config/firebase'
@@ -8,29 +9,9 @@ import logo from "./logo.png"
 
 
 const Navbar = () => {
-  const {user ,logIn, signUp, logOut, setShowSignIn, totalQuantities} = useAuth();
-  const [favorites, setFavorites] = useState([])
-
-  useEffect(() => {
-    
-    const getFavorites = async () => {
-     if (user) { const docRef = doc(database, 'user', user?.uid)!
-      const userSnap = await getDoc(docRef)
-    
-      if (userSnap.exists()) {
-        console.log(userSnap.get("fav"))
-        setFavorites(userSnap.get("fav"))
-      } else {
-        // doc.data() will be undefined in this case
-        console.log('No such document!')
-      }
-    }else {console.log("user not found")}
+  const {user , favorites, logOut, setShowSignIn, totalQuantities} = useAuth();
   
-    }
-    getFavorites()
-    
-  }, [])
-  
+  console.log(favorites)
   
   return (
     <div className="absolute top-0 flex w-full flex-row justify-between items-center gap-5 bg-[#161880] p-2.5 z-50">
@@ -48,16 +29,18 @@ const Navbar = () => {
         <BsSearch className='absolute right-2 top-[20%]'/>
       </div>
       <div className="flex flex-row gap-5">
-        <span className="font-dmsans text-sm text-white md:text-lg">
+        <span className="hidden font-dmsans text-sm text-white md:text-lg">
           Available 24/7 at
           <br />
           <a href="tel:(+84)%2090%2012345" className='font-bold text-sm md:text-lg'>(+84) 90 12345</a>
         </span>
 
-        <div className='flex flex-col justify-center items-center'>
-          <BsHeart color="#fdc525" size="17px" />
-          <p className="font-dmsans text-sm text-white md:text-xl">Wish Lists {favorites.length}</p>
-        </div>
+        <Link href={"/favorites"}>
+          <div className='flex flex-col justify-center items-center cursor-pointer'>
+            <BsHeart color="#fdc525" size="17px" />
+            <p className="font-dmsans text-sm text-white md:text-xl">Wish Lists {favorites.length}</p>
+          </div>
+        </Link>
         <div className='flex flex-col justify-center items-center'>
           <BsPerson color="#fdc525" size="17px" />
           <p className="font-dmsans text-sm text-white md:text-xl cursor-pointer">{user ? <span onClick={logOut}>Sign Out</span> : <span onClick={() => setShowSignIn(true)}>Sign in</span> }</p>

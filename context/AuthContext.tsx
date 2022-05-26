@@ -35,6 +35,8 @@ export const AuthContextProvider = ({
   const [cart, setCart] = useState<any[]>([])
   const [totalPrice, setTotalPrice] = useState(1)
   const [totalQuantities, setTotalQuantities] = useState(0)
+  const [favorites, setFavorites] = useState([])
+
 
   let foundProduct: any;
 
@@ -76,17 +78,26 @@ export const AuthContextProvider = ({
     await signOut(auth)
   }
 
-  const getFavorites = async () => {
-    const docRef = doc(database, 'user', user.uid)
-    const userSnap = await getDoc(docRef)
 
-    if (userSnap.exists()) {
-      console.log('Document data:', userSnap.get('fav'))
-    } else {
-      // doc.data() will be undefined in this case
-      console.log('No such document!')
+  useEffect(() => {
+    
+    const getFavorites = async () => {
+     if (user) { const docRef = doc(database, 'user', user?.uid)!
+      const userSnap = await getDoc(docRef)
+    
+      if (userSnap.exists()) {
+        console.log(userSnap.get("fav"))
+        setFavorites(userSnap.get("fav"))
+      } else {
+        // doc.data() will be undefined in this case
+        console.log('No such document!')
+      }
+    }else {console.log("user not found")}
+  
     }
-  }
+    getFavorites()
+    
+  }, [favorites])
 
   const addFav = async (productData: any) => {
     // Atomically add a new region to the "regions" array field.
@@ -159,7 +170,7 @@ export const AuthContextProvider = ({
         logOut,
         showSignIn,
         setShowSignIn,
-        getFavorites,
+        favorites,
         addFav,
         cart,
         setCart,

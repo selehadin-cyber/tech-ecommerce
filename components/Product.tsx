@@ -17,7 +17,7 @@ export type Props = {
   
 }
 
-const Product: React.FC<Props> = ({ productData }) => {
+const Product: React.FC<Props | any> = ({ productData }) => {
   const { user, logIn, signUp, logOut, showSignIn } = useAuth()
   const {cart, setCart} = useAuth();
 
