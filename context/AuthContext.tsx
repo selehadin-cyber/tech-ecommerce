@@ -37,17 +37,26 @@ export const AuthContextProvider = ({
   const [totalQuantities, setTotalQuantities] = useState(0)
   const [favorites, setFavorites] = useState([])
 
-
-  let foundProduct: any;
+  let foundProduct: any
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         setUser({
           uid: user.uid,
           email: user.email,
           displayName: user.displayName,
         })
+        const docRef = doc(database, 'user', user?.uid)!
+        const userSnap = await getDoc(docRef)
+
+        if (userSnap.exists()) {
+          console.log(userSnap.get('fav'))
+          setFavorites(userSnap.get('fav'))
+        } else {
+          // doc.data() will be undefined in this case
+          console.log('No such document!')
+        }
       } else {
         setUser(null)
       }
@@ -78,26 +87,25 @@ export const AuthContextProvider = ({
     await signOut(auth)
   }
 
-
   useEffect(() => {
-    
     const getFavorites = async () => {
-     if (user) { const docRef = doc(database, 'user', user?.uid)!
-      const userSnap = await getDoc(docRef)
-    
-      if (userSnap.exists()) {
-        console.log(userSnap.get("fav"))
-        setFavorites(userSnap.get("fav"))
+      if (user) {
+        const docRef = doc(database, 'user', user?.uid)!
+        const userSnap = await getDoc(docRef)
+
+        if (userSnap.exists()) {
+          console.log(userSnap.get('fav'))
+          setFavorites(userSnap.get('fav'))
+        } else {
+          // doc.data() will be undefined in this case
+          console.log('No such document!')
+        }
       } else {
-        // doc.data() will be undefined in this case
-        console.log('No such document!')
+        console.log('user not found')
       }
-    }else {console.log("user not found")}
-  
     }
     getFavorites()
-    
-  }, [favorites])
+  }, [])
 
   const addFav = async (productData: any) => {
     // Atomically add a new region to the "regions" array field.
@@ -126,12 +134,12 @@ export const AuthContextProvider = ({
           return {
             ...cartProduct,
             quantity: cartProduct.quantity + quantity,
-          };
-      });
-      setCart(updatedCartItems);
+          }
+      })
+      setCart(updatedCartItems)
     } else {
-      product.quantity = quantity;
-      setCart([...cart, { ...product }]);
+      product.quantity = quantity
+      setCart([...cart, { ...product }])
     }
   }
 
