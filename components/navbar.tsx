@@ -9,15 +9,17 @@ import logo from "./logo.png"
 
 
 const Navbar = () => {
-  const {user , favorites, logOut, setShowSignIn, totalQuantities} = useAuth();
+  const {user , favorites, logOut, setShowSignIn, totalQuantities, toggleDrawer} = useAuth();
   
   console.log(favorites)
   
   return (
     <div className="absolute top-0 flex w-full flex-row justify-between items-center gap-5 bg-[#161880] p-2.5 z-50">
-        <div className="logo w-[140px] p-2">
-            <Image src={logo} alt="logo" />
-        </div>
+        <Link href={"/"}>
+          <div className="logo w-[140px] p-2 cursor-pointer">
+              <Image src={logo} alt="logo" />
+          </div>
+        </Link>
       <div className="input relative hidden md:flex">
         <input
           type="search"
@@ -45,7 +47,7 @@ const Navbar = () => {
           <BsPerson color="#fdc525" size="17px" />
           <p className="font-dmsans text-sm text-white md:text-xl cursor-pointer">{user ? <span onClick={logOut}>Sign Out</span> : <span onClick={() => setShowSignIn(true)}>Sign in</span> }</p>
         </div>
-        <div className='flex flex-col justify-center items-center'>
+        <div className='flex flex-col justify-center items-center cursor-pointer' onClick={toggleDrawer("right", true)}>
           <button className='relative'>
               <BsCart3 color="#fdc525" size="17px" />
               <span className='absolute text-[10px] text-white -right-2 -top-1.5 bg-[#0a6cdc] w-4 h-4 rounded-full text-center font-semibold'>{totalQuantities}</span>

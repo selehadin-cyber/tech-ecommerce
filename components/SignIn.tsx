@@ -14,7 +14,7 @@ interface Inputs {
 function Login() {
   const [login, setLogin] = useState(false);
 
-  const {user ,logIn, signUp, logOut} = useAuth();
+  const {user ,logIn, signUp, logOut, setShowSignIn} = useAuth();
   console.log(user);
 
   const {
@@ -25,6 +25,7 @@ function Login() {
   const onSubmit: SubmitHandler<Inputs> = async ({email, password}) => {
     if (login) {
       await logIn(email , password)
+      setShowSignIn(false)
     } else {await signUp(email, password)
     }
   }
@@ -73,7 +74,7 @@ function Login() {
         <button
           type="submit"
           className="w-full rounded bg-[#0a6cdc] py-3 font-semibold"
-          onClick={() => setLogin(true)}
+          onClick={() => {setLogin(true)}}
         >
           Sign In
         </button>
