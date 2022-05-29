@@ -3,7 +3,7 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBmPSNjzsrii7nU9tjZynYhCYwpGMyR_gI",
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: "ihsan-store.firebaseapp.com",
   projectId: "ihsan-store",
   storageBucket: "ihsan-store.appspot.com",

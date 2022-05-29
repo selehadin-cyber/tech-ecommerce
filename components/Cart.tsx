@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { AiFillCloseSquare } from 'react-icons/ai'
+import {
+  AiFillCaretDown,
+  AiFillCaretUp,
+  AiFillCloseSquare,
+} from 'react-icons/ai'
 import { Drawer } from '@mui/material'
 import getStripe from '../config/getStripe'
 import { useAuth } from '../context/AuthContext'
@@ -53,12 +57,12 @@ const Cart = () => {
       >
         <div className="fixed top-0 right-0 bottom-0 h-full w-96 bg-white">
           <div>
-                <div className="flex justify-between py-10 px-5 font-bold">
-                  <p>YOUR BAG</p>
-                  <p onClick={toggleDrawer('right', false)}>
-                    <AiFillCloseSquare size="25px" />
-                  </p>
-                </div>
+            <div className="flex justify-between py-10 px-5 font-bold">
+              <p>YOUR BAG</p>
+              <p onClick={toggleDrawer('right', false)}>
+                <AiFillCloseSquare size="25px" />
+              </p>
+            </div>
             {!cart.length ? (
               <>
                 <div className="flex flex-col gap-4">
@@ -74,45 +78,55 @@ const Cart = () => {
             {cart &&
               cart.map((product: Cart, idx: number) => (
                 <>
-                <div key={idx} className="flex">
-                  <Link href={`/products/${product.name}`} className="pr-4">
-                    <Image
-                      loading="lazy"
-                      src={product?.image}
-                      className="rounded-sm object-cover md:rounded"
-                      width={100}
-                      height={100}
-                    />
-                  </Link>
-                  <div>
-                    <p className='font-bold'>{product.name}</p>
-                    <p>{product.price} TL</p>
-                    <span className="font-bold">
-                      {product.quantity}
-                    </span>
-                    <button
-                      onClick={() => toggleCartItemQuantity(product.name, 'add')}
-                    >
-                      inc
-                    </button>
-                    <button
-                      onClick={() => toggleCartItemQuantity(product.name, 'dec')}
-                    >
-                      dec
-                    </button>
+                  <div key={idx} className="flex px-5">
+                    <Link href={`/products/${product.name}`} className="pr-8">
+                      <Image
+                        loading="lazy"
+                        src={product?.image}
+                        className="rounded-sm object-cover md:rounded"
+                        width={100}
+                        height={100}
+                      />
+                    </Link>
+                    <div className='flex flex-col px-4 gap-2'>
+                      <p className="font-bold">{product.name}</p>
+                      <p>{product.price} TL</p>
+                      <div className='flex justify-between border border-black rounded-full items-center'>
+                        <span className="font-semibold pl-4">{product.quantity}</span>
+                        <div className='flex flex-col self-end pr-2'>
+                          <button
+                            onClick={() =>
+                              toggleCartItemQuantity(product.name, 'add')
+                            }
+                          >
+                            {<AiFillCaretUp />}
+                          </button>
+                          <button
+                            onClick={() =>
+                              toggleCartItemQuantity(product.name, 'dec')
+                            }
+                          >
+                            {<AiFillCaretDown />}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  </div>
-                  <div className="flex flex-col items-center">
-                    <p>total : {totalPrice}</p>
+                  <hr className='mx-5 my-3'/>
+                </>
+              ))}
+                  <div className="flex flex-col items-center px-5 py-7">
+                    <div className='flex items-center justify-between w-full'>
+                      <p>Total: </p>
+                      <p className='font-bold'>{totalPrice} TL</p>
+                    </div>
                     <button
-                      className="bg-gray-700 text-white"
+                      className="bg-[#0a6cdc] p-3 rounded-full w-[75%] text-white my-3"
                       onClick={handleCheckout}
                     >
                       Proceed to checkout
                     </button>
                   </div>
-                </>
-              ))}
           </div>
         </div>
       </Drawer>
