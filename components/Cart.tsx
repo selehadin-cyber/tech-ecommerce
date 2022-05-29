@@ -91,7 +91,7 @@ const Cart = () => {
                     <div className='flex flex-col px-4 gap-2'>
                       <p className="font-bold">{product.name}</p>
                       <p>{product.price} TL</p>
-                      <div className='flex justify-between border border-black rounded-full items-center'>
+                      <div className='flex justify-between w-20 border border-black rounded-full items-center'>
                         <span className="font-semibold pl-4">{product.quantity}</span>
                         <div className='flex flex-col self-end pr-2'>
                           <button
