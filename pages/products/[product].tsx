@@ -17,6 +17,7 @@ import { database } from '../../config/firebase'
 import { useAuth } from '../../context/AuthContext'
 import { TextField } from '@mui/material'
 import Image from 'next/image'
+import Navbar from '../../components/navbar'
 
 interface IParams extends ParsedUrlQuery {
   product: string
@@ -33,25 +34,26 @@ export interface PageProps {
 }
 const ProductPage: React.FC<PageProps> = ({ singleProduct }) => {
   const [value, setValue] = useState<number | null>(2)
-  const [title, setTitle] = useState("")
+  const [title, setTitle] = useState('')
   const [review, setReview] = useState('review')
   const { addFav, user, onAdd } = useAuth()
   const [qty, setQty] = useState(1)
 
   const getUserName = async () => {
-    if (user) { const docRef = doc(database, 'user', user?.uid)!
+    if (user) {
+      const docRef = doc(database, 'user', user?.uid)!
       const userSnap = await getDoc(docRef)
-    
+
       if (userSnap.exists()) {
-        return userSnap.get("userName")
+        return userSnap.get('userName')
       } else {
         // doc.data() will be undefined in this case
         console.log('No such document!')
       }
-    }else {console.log("user not found")}
-  
+    } else {
+      console.log('user not found')
     }
-  
+  }
 
   const addReview = async (
     product: any,
@@ -59,7 +61,7 @@ const ProductPage: React.FC<PageProps> = ({ singleProduct }) => {
     review: string
   ) => {
     // Atomically add a new region to the "regions" array field.
-    const Name = await getUserName();
+    const Name = await getUserName()
     const userUid = user.uid
     const usersRef = doc(database, 'products', product.name)
     console.log(Name)
@@ -69,7 +71,7 @@ const ProductPage: React.FC<PageProps> = ({ singleProduct }) => {
           star: star,
           title: title,
           review: review,
-          name: Name
+          name: Name,
         },
       }),
     })
@@ -82,72 +84,90 @@ const ProductPage: React.FC<PageProps> = ({ singleProduct }) => {
 
   return (
     <>
-{/*       <img src={singleProduct?.image} alt="product-image" />
- */}      <Image src={singleProduct?.image as string} width={250} height={250}></Image>
-      <h1 className="text-center text-xl font-bold">{singleProduct?.name}</h1>
-      <p>{singleProduct?.price} TL</p>
-      <button
-        type="button"
-        className="mr-2 mb-2 rounded-full bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-        onClick={() => onAdd(singleProduct, qty)}
-      >
-        Add to Cart
-      </button>
-      <input className="" name="quantity" value={qty} type="number" onChange={(e) => setQty(parseInt(e.target.value))}/>
-      <button
-        onClick={() => addFav(singleProduct)}
-        type="button"
-        className="h-10 w-10 rounded-full bg-gray-300"
-      >
-        <BsHeart className="m-auto" />
-      </button>
-      <Rating
-        name="simple-controlled"
-        value={value}
-        onChange={(event, newValue) => {
-          setValue(newValue)
-        }}
-      />
-      <TextField
-        id="outlined-multiline-static"
-        label="Title"
-        multiline
-        rows={4}
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-      />
-      <TextField
-        id="outlined-multiline-static"
-        label="Comment"
-        multiline
-        rows={4}
-        value={review}
-        onChange={(e) => setReview(e.target.value)}
-      />
-      <button
-        type="submit"
-        className="w-full rounded bg-[#0a6cdc] py-3 font-semibold"
-        onClick={() => {
-          addReview(singleProduct, value, review)
-        }}
-      >
-        Submit
-      </button>
-      <h2>Reviews</h2>
-      {singleProduct?.reviews.map((review) =>
-        Object.values(review).map((review: any) => (
-          <>
-            <h2 className='font-bold'>{review.title}</h2>
-            <p className='text-sm'>{review.name}</p>
-            <Rating
-              name="read-only"
-              value={review.star}
-              readOnly
-            />
-            <p>review: {review.review}</p>
-          </>
-        ))
-      )}
+      <Navbar />
+      <div className="container px-5 pt-20">
+        <div className="image-parent relative h-[250px] w-[100%]">
+          <Image
+            src={singleProduct?.image as string}
+            objectFit="contain"
+            layout="fill"
+            className="w-full"
+          />
+        </div>
+        <h1 className="text-center text-xl font-bold">{singleProduct?.name}</h1>
+        <div className="flex font-thin">
+          <Rating name="read-only" value={4} readOnly />
+          <p className='pl-3'>{singleProduct?.reviews.length} reviews</p>
+        </div>
+        <p className='font-extrabold text-lg'>{singleProduct?.price} TL</p>
+        
+        <div className="flex gap-3">
+          <input
+            className="flex justify-between w-20 border border-black rounded-full items-center p-3"
+            name="quantity"
+            value={qty}
+            type="number"
+            onChange={(e) => setQty(parseInt(e.target.value))}
+          />
+          <button
+            type="button"
+            className="mr-2 mb-2 rounded-full bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            onClick={() => onAdd(singleProduct, qty)}
+          >
+            Add to Cart
+          </button>
+          <button
+            onClick={() => addFav(singleProduct)}
+            type="button"
+            className="h-10 w-10 rounded-full bg-gray-300 hover:bg-pink-300"
+          >
+            <BsHeart className="m-auto" />
+          </button>
+        </div>
+        <Rating
+          name="simple-controlled"
+          value={value}
+          onChange={(event, newValue) => {
+            setValue(newValue)
+          }}
+        />
+        <TextField
+          id="outlined-multiline-static"
+          label="Title"
+          multiline
+          rows={4}
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+        <TextField
+          id="outlined-multiline-static"
+          label="Comment"
+          multiline
+          rows={4}
+          value={review}
+          onChange={(e) => setReview(e.target.value)}
+        />
+        <button
+          type="submit"
+          className="w-full rounded bg-[#0a6cdc] py-3 font-semibold"
+          onClick={() => {
+            addReview(singleProduct, value, review)
+          }}
+        >
+          Submit
+        </button>
+        <h2>Reviews</h2>
+        {singleProduct?.reviews.map((review) =>
+          Object.values(review).map((review: any) => (
+            <>
+              <h2 className="font-bold">{review.title}</h2>
+              <p className="text-sm">{review.name}</p>
+              <Rating name="read-only" value={review.star} readOnly />
+              <p>review: {review.review}</p>
+            </>
+          ))
+        )}
+      </div>
     </>
   )
 }
