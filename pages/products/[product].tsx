@@ -33,7 +33,7 @@ export interface PageProps {
   }
 }
 const ProductPage: React.FC<PageProps> = ({ singleProduct }) => {
-  const [value, setValue] = useState<number | null>(2)
+  const [value, setValue] = useState<number | null>(0)
   const [title, setTitle] = useState('')
   const [review, setReview] = useState('review')
   const [writeReview, setWriteReview] = useState(false)
@@ -98,13 +98,13 @@ const ProductPage: React.FC<PageProps> = ({ singleProduct }) => {
         <h1 className="text-center text-xl font-bold">{singleProduct?.name}</h1>
         <div className="flex font-thin">
           <Rating name="read-only" value={4} readOnly />
-          <p className='pl-3'>{singleProduct?.reviews.length} reviews</p>
+          <p className="pl-3">{singleProduct?.reviews.length} reviews</p>
         </div>
-        <p className='font-extrabold text-lg'>{singleProduct?.price} TL</p>
-        
-        <div className="flex gap-3 items-center justify-center">
+        <p className="text-lg font-extrabold">{singleProduct?.price} TL</p>
+
+        <div className="flex items-center justify-center gap-3">
           <input
-            className="flex justify-between w-20 border border-black rounded-full items-center py-1.5 px-2"
+            className="flex w-20 items-center justify-between rounded-full border border-black py-1.5 px-2"
             name="quantity"
             value={qty}
             type="number"
@@ -126,51 +126,61 @@ const ProductPage: React.FC<PageProps> = ({ singleProduct }) => {
           </button>
         </div>
 
-        <div className='review-section'>
-          <h2 className='font-bold text-2xl'>Customer Reviews</h2>
-          <div className="flex gap-3">
+        <div className="review-section">
+          <h2 className="text-2xl font-bold">Customer Reviews</h2>
+          <div className="flex items-center justify-center gap-3">
             <Rating name="read-only" value={4} readOnly />
             <p>Based on {singleProduct?.reviews.length} reviews</p>
-            <button onClick={() => setWriteReview(prev => !prev)}>Write a review</button>
+            <button
+              className="rounded-full border border-black py-1 px-2"
+              onClick={() => setWriteReview((prev) => !prev)}
+            >
+              Write a review
+            </button>
           </div>
           {/* write a review section */}
           {writeReview && (
             <>
-              <Rating
-              name="simple-controlled"
-              value={value}
-              onChange={(event, newValue) => {
-                setValue(newValue)
-              }}
-                        />
-                        <TextField
-              id="outlined-multiline-static"
-              label="Title"
-              multiline
-              rows={4}
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-                        />
-                        <TextField
-              id="outlined-multiline-static"
-              label="Comment"
-              multiline
-              rows={4}
-              value={review}
-              onChange={(e) => setReview(e.target.value)}
-                        />
-                        <button
-              type="submit"
-              className="w-full rounded bg-[#0a6cdc] py-3 font-semibold"
-              onClick={() => {
-                addReview(singleProduct, value, review)
-              }}
-                        >
-              Submit
-                        </button>
+              <h2 className="text-xl underline decoration-sky-500 decoration-4 underline-offset-8 ">
+                Write a review
+              </h2>
+              <div className="flex flex-col gap-3 max-w-[910px]">
+                <div className="flex gap-5 mt-5">
+                  <p>Rating</p>
+                  <Rating
+                    name="simple-controlled"
+                    value={value}
+                    onChange={(event, newValue) => {
+                      setValue(newValue)
+                    }}
+                  />
+                </div>
+                <p>Review Title</p>
+                <input
+                  id="outlined-multiline-static"
+                    className='bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                />
+                <p>Body of Review</p>
+                <textarea
+                  id="outlined-multiline-static"
+                    className='block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500'
+                  value={review}
+                  onChange={(e) => setReview(e.target.value)}
+                />
+                <button
+                  type="submit"
+                  className="w-full rounded-full bg-[#0a6cdc] py-3 font-semibold"
+                  onClick={() => {
+                    addReview(singleProduct, value, review)
+                  }}
+                >
+                  Submit
+                </button>
+              </div>
             </>
           )}
-          
 
           {/* reviews section */}
           <h2>Reviews</h2>
@@ -184,8 +194,8 @@ const ProductPage: React.FC<PageProps> = ({ singleProduct }) => {
               </>
             ))
           )}
-                </div>
         </div>
+      </div>
     </>
   )
 }
