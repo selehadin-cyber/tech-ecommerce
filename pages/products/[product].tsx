@@ -36,6 +36,7 @@ const ProductPage: React.FC<PageProps> = ({ singleProduct }) => {
   const [value, setValue] = useState<number | null>(2)
   const [title, setTitle] = useState('')
   const [review, setReview] = useState('review')
+  const [writeReview, setWriteReview] = useState(false)
   const { addFav, user, onAdd } = useAuth()
   const [qty, setQty] = useState(1)
 
@@ -101,9 +102,9 @@ const ProductPage: React.FC<PageProps> = ({ singleProduct }) => {
         </div>
         <p className='font-extrabold text-lg'>{singleProduct?.price} TL</p>
         
-        <div className="flex gap-3">
+        <div className="flex gap-3 items-center justify-center">
           <input
-            className="flex justify-between w-20 border border-black rounded-full items-center p-3"
+            className="flex justify-between w-20 border border-black rounded-full items-center py-1.5 px-2"
             name="quantity"
             value={qty}
             type="number"
@@ -111,7 +112,7 @@ const ProductPage: React.FC<PageProps> = ({ singleProduct }) => {
           />
           <button
             type="button"
-            className="mr-2 mb-2 rounded-full bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            className="mr-2 rounded-full bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             onClick={() => onAdd(singleProduct, qty)}
           >
             Add to Cart
@@ -124,50 +125,67 @@ const ProductPage: React.FC<PageProps> = ({ singleProduct }) => {
             <BsHeart className="m-auto" />
           </button>
         </div>
-        <Rating
-          name="simple-controlled"
-          value={value}
-          onChange={(event, newValue) => {
-            setValue(newValue)
-          }}
-        />
-        <TextField
-          id="outlined-multiline-static"
-          label="Title"
-          multiline
-          rows={4}
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-        <TextField
-          id="outlined-multiline-static"
-          label="Comment"
-          multiline
-          rows={4}
-          value={review}
-          onChange={(e) => setReview(e.target.value)}
-        />
-        <button
-          type="submit"
-          className="w-full rounded bg-[#0a6cdc] py-3 font-semibold"
-          onClick={() => {
-            addReview(singleProduct, value, review)
-          }}
-        >
-          Submit
-        </button>
-        <h2>Reviews</h2>
-        {singleProduct?.reviews.map((review) =>
-          Object.values(review).map((review: any) => (
+
+        <div className='review-section'>
+          <h2 className='font-bold text-2xl'>Customer Reviews</h2>
+          <div className="flex gap-3">
+            <Rating name="read-only" value={4} readOnly />
+            <p>Based on {singleProduct?.reviews.length} reviews</p>
+            <button onClick={() => setWriteReview(prev => !prev)}>Write a review</button>
+          </div>
+          {/* write a review section */}
+          {writeReview && (
             <>
-              <h2 className="font-bold">{review.title}</h2>
-              <p className="text-sm">{review.name}</p>
-              <Rating name="read-only" value={review.star} readOnly />
-              <p>review: {review.review}</p>
+              <Rating
+              name="simple-controlled"
+              value={value}
+              onChange={(event, newValue) => {
+                setValue(newValue)
+              }}
+                        />
+                        <TextField
+              id="outlined-multiline-static"
+              label="Title"
+              multiline
+              rows={4}
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+                        />
+                        <TextField
+              id="outlined-multiline-static"
+              label="Comment"
+              multiline
+              rows={4}
+              value={review}
+              onChange={(e) => setReview(e.target.value)}
+                        />
+                        <button
+              type="submit"
+              className="w-full rounded bg-[#0a6cdc] py-3 font-semibold"
+              onClick={() => {
+                addReview(singleProduct, value, review)
+              }}
+                        >
+              Submit
+                        </button>
             </>
-          ))
-        )}
-      </div>
+          )}
+          
+
+          {/* reviews section */}
+          <h2>Reviews</h2>
+          {singleProduct?.reviews.map((review) =>
+            Object.values(review).map((review: any) => (
+              <>
+                <h2 className="font-bold">{review.title}</h2>
+                <p className="text-sm">{review.name}</p>
+                <Rating name="read-only" value={review.star} readOnly />
+                <p>review: {review.review}</p>
+              </>
+            ))
+          )}
+                </div>
+        </div>
     </>
   )
 }

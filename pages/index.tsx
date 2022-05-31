@@ -25,7 +25,6 @@ const Home: NextPage = () => {
         <Banner />
         <Deals />
         <ProductsGrid />
-        <Cart />
       </div>
     </div>
   )

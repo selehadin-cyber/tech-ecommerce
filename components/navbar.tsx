@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react'
 import { BsHeart, BsPerson, BsCart3, BsSearch } from 'react-icons/bs'
 import { database } from '../config/firebase'
 import { useAuth } from '../context/AuthContext'
+import Cart from './Cart'
 import logo from "./logo.png"
 
 
@@ -55,6 +56,7 @@ const Navbar = () => {
           <p className="font-dmsans text-sm text-white md:text-xl">Carts</p>
         </div>
       </div>
+      <Cart />
     </div>
   )
 }
