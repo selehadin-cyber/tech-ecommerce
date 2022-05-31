@@ -55,7 +55,7 @@ const Cart = () => {
         open={state['right']}
         onClose={toggleDrawer('right', false)}
       >
-        <div className="fixed top-0 right-0 bottom-0 h-full w-96 bg-white">
+        <div className="fixed top-0 right-0 bottom-0 h-full w-96 max-w-[90%] bg-white">
           <div>
             <div className="flex justify-between py-10 px-5 font-bold">
               <p>YOUR BAG</p>

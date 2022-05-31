@@ -17,7 +17,7 @@ const Navbar = () => {
   return (
     <div className="absolute top-0 flex w-full flex-row justify-between items-center gap-5 bg-[#161880] p-2.5 z-50">
         <Link href={"/"}>
-          <div className="logo w-[140px] p-2 cursor-pointer">
+          <div className="logo w-[110px] md:w-[140px] p-2 cursor-pointer">
               <Image src={logo} alt="logo" />
           </div>
         </Link>
