@@ -24,7 +24,7 @@ const Favorites = () => {
         <h4>REMOVE</h4>
       </div>
       {favorites.map((item: Props) => (
-        <div className="grid grid-cols-4 py-3 font-bold">
+        <div key={item.name} className="grid grid-cols-4 py-3 font-bold">
           <Image
             src={item.image}
             width={150}

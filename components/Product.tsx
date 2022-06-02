@@ -36,15 +36,15 @@ const Product: React.FC<Props | any> = ({ productData }) => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center gap-3">
+    <div className="group flex flex-col items-start justify-center gap-3">
       <Link href={`/products/${productData.name}`}>
         <div>
           <img
             src={productData?.image}
             className="rounded-sm object-cover md:rounded"
             /* layout="fill" */
-            width={250}
-            height={250}
+            width={240}
+            height={240}
           />
           <div className="flex">
             {[1, 2, 3, 4].map((star, id) => (
@@ -57,10 +57,10 @@ const Product: React.FC<Props | any> = ({ productData }) => {
           </p>
         </div>
       </Link>
-          <div className="flex">
+          <div className="flex items-start w-full">
             <button
               type="button"
-              className="mr-2 mb-2 rounded-full bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              className="mr-2 mb-2 rounded-full w-[60%] bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               onClick={() => setCart([...cart , productData])}
             >
               Add to Cart
@@ -68,7 +68,7 @@ const Product: React.FC<Props | any> = ({ productData }) => {
             <button
               onClick={addFav}
               type="button"
-              className="h-10 w-10 rounded-full bg-gray-300"
+              className="hidden group-hover:block hover:bg-pink-500 h-10 w-10 rounded-full bg-gray-300"
             >
               <BsHeart className="m-auto" />
             </button>
