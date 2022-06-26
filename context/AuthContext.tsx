@@ -38,6 +38,7 @@ export const AuthContextProvider = ({
   const [totalPrice, setTotalPrice] = useState(1)
   const [totalQuantities, setTotalQuantities] = useState(0)
   const [favorites, setFavorites] = useState([])
+  const [favoriteClicked, setFavoriteClicked] = useState(false)
   const [state, setState] = useState({
     top: false,
     left: false,
@@ -55,16 +56,6 @@ export const AuthContextProvider = ({
           email: user.email,
           displayName: user.displayName,
         })
-        const docRef = doc(database, 'user', user?.uid)!
-        const userSnap = await getDoc(docRef)
-
-        if (userSnap.exists()) {
-          console.log(userSnap.get('fav'))
-          setFavorites(userSnap.get('fav'))
-        } else {
-          // doc.data() will be undefined in this case
-          console.log('No such document!')
-        }
       } else {
         setUser(null)
         setFavorites([])
@@ -97,24 +88,25 @@ export const AuthContextProvider = ({
   }
 
   useEffect(() => {
-    const getFavorites = async () => {
-      if (user) {
-        const docRef = doc(database, 'user', user?.uid)!
-        const userSnap = await getDoc(docRef)
-
-        if (userSnap.exists()) {
-          console.log(userSnap.get('fav'))
-          setFavorites(userSnap.get('fav'))
+   const favoritesLoad = onAuthStateChanged(auth, async (user) => {
+        if (user) {
+          const docRef = doc(database, 'user', user?.uid)!
+          const userSnap = await getDoc(docRef)
+  
+          if (userSnap.exists()) {
+            console.log(userSnap.get('fav'))
+            setFavorites(userSnap.get('fav'))
+          } else {
+            // doc.data() will be undefined in this case
+            console.log('No such document!')
+          }
         } else {
-          // doc.data() will be undefined in this case
-          console.log('No such document!')
+          setUser(null)
+          setFavorites([])
         }
-      } else {
-        console.log('user not found')
-      }
-    }
-    getFavorites()
-  }, [])
+      })
+      return () => favoritesLoad()
+  }, [favoriteClicked])
 
   const addFav = async (productData: any) => {
     // Atomically add a new region to the "regions" array field.
@@ -210,7 +202,9 @@ export const AuthContextProvider = ({
         totalQuantities,
         toggleCartItemQuantity,
         toggleDrawer,
-        state
+        state,
+        favoriteClicked,
+        setFavoriteClicked
       }}
     >
       {children}

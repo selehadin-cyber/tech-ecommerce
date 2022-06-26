@@ -49,7 +49,7 @@ const ProductsGrid: React.FC = () => {
 
   return (
     <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4'>
-      {products && products.map((product, idx) => (<Product key={product.name} productData={product}/>))}
+      {products && products.map((product) => (<Product key={product.name} productData={product}/>))}
       
     </div>
   )

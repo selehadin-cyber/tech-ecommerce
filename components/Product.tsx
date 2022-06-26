@@ -18,7 +18,7 @@ export type Props = {
 }
 
 const Product: React.FC<Props | any> = ({ productData }) => {
-  const { user, logIn, signUp, logOut, showSignIn } = useAuth()
+  const { user, logIn, signUp, logOut, showSignIn, setFavoriteClicked } = useAuth()
   const {cart, setCart} = useAuth();
 
   console.log(productData)
@@ -33,6 +33,7 @@ const Product: React.FC<Props | any> = ({ productData }) => {
     /* await updateDoc(usersRef, {
       regions: arrayRemove('east_coast'),
     }) */
+    setFavoriteClicked((prev: boolean) => !prev)
   }
 
   return (
