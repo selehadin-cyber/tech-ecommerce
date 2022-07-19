@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import React from 'react'
+import React, { useState } from 'react'
 import { BsHeart, BsStarFill } from 'react-icons/bs'
 import { Firestore, collection, addDoc, doc, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore'
 import { useAuth } from '../context/AuthContext'
@@ -19,7 +19,8 @@ export type Props = {
 
 const Product: React.FC<Props | any> = ({ productData }) => {
   const { user, logIn, signUp, logOut, showSignIn, setFavoriteClicked } = useAuth()
-  const {cart, setCart} = useAuth();
+  const {onAdd} = useAuth();
+  const [disabled, setDisabled] = useState(false)
 
   console.log(productData)
   const addFav = async () => {
@@ -35,6 +36,7 @@ const Product: React.FC<Props | any> = ({ productData }) => {
     }) */
     setFavoriteClicked((prev: boolean) => !prev)
   }
+  
 
   return (
     <div className="group flex flex-col items-start justify-center gap-3">
@@ -62,7 +64,8 @@ const Product: React.FC<Props | any> = ({ productData }) => {
             <button
               type="button"
               className="mr-2 mb-2 rounded-full w-[60%] bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-              onClick={() => setCart([...cart , productData])}
+              onClick={() => {setDisabled(true);onAdd(productData, 1)}}
+              disabled={disabled}
             >
               Add to Cart
             </button>

@@ -50,7 +50,7 @@ const Favorites = () => {
           </div>
           <h4 className='font-normal'>{item.name}</h4>
           <h4>{item.price} TL</h4>
-          <h4 onClick={() => removeFav(item)}>REMOVE</h4>
+          <h4 className='cursor-pointer' onClick={() => removeFav(item)}>REMOVE</h4>
         </div>
       ))}
     </>

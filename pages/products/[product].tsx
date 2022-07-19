@@ -11,7 +11,7 @@ import {
 import Rating from '@mui/material/Rating'
 import { GetStaticProps } from 'next'
 import { ParsedUrlQuery } from 'querystring'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { BsHeart } from 'react-icons/bs'
 import { database } from '../../config/firebase'
 import { useAuth } from '../../context/AuthContext'
@@ -31,6 +31,14 @@ export interface PageProps {
     image: string
     reviews: any[]
   }
+  reviewProduct?: {
+    price: number
+    'on-sale': boolean
+    type: string
+    name: string
+    image: string
+    reviews: any[]
+  }
 }
 const ProductPage: React.FC<PageProps> = ({ singleProduct }) => {
   const [value, setValue] = useState<number | null>(0)
@@ -39,6 +47,30 @@ const ProductPage: React.FC<PageProps> = ({ singleProduct }) => {
   const [writeReview, setWriteReview] = useState(false)
   const { addFav, user, onAdd } = useAuth()
   const [qty, setQty] = useState(1)
+  const [reviewAdded, setReviewAdded] = useState(false)
+  const [reviewProduct, setReviewProduct] = useState<PageProps>()
+
+  useEffect(() => {
+    const Review = async () => {
+      const Name = singleProduct?.name
+      const docRef = doc(database, 'products', `${Name}`)
+      const docSnap = await getDoc(docRef)
+
+      if (docSnap.exists()) {
+        console.log('Document data:', docSnap.data())
+      } else {
+        // doc.data() will be undefined in this case
+        console.log('No such document!')
+      }
+
+      /*  const query = `*[_type == "product" && slug.current ==  '${slug}' ][0]`; */
+
+      const currentProduct = docSnap.data()
+      setReviewProduct(currentProduct)
+      setWriteReview(false)
+    }
+    Review()
+  }, [reviewAdded])
 
   const getUserName = async () => {
     if (user) {
@@ -76,7 +108,7 @@ const ProductPage: React.FC<PageProps> = ({ singleProduct }) => {
         },
       }),
     })
-
+    setReviewAdded(prev => !prev)
     // Atomically remove a region from the "regions" array field.
     /* await updateDoc(usersRef, {
       regions: arrayRemove('east_coast'),
@@ -144,8 +176,8 @@ const ProductPage: React.FC<PageProps> = ({ singleProduct }) => {
               <h2 className="text-xl underline decoration-sky-500 decoration-4 underline-offset-8 ">
                 Write a review
               </h2>
-              <div className="flex flex-col gap-3 max-w-[910px]">
-                <div className="flex gap-5 mt-5">
+              <div className="flex max-w-[910px] flex-col gap-3">
+                <div className="mt-5 flex gap-5">
                   <p>Rating</p>
                   <Rating
                     name="simple-controlled"
@@ -158,14 +190,14 @@ const ProductPage: React.FC<PageProps> = ({ singleProduct }) => {
                 <p>Review Title</p>
                 <input
                   id="outlined-multiline-static"
-                    className='bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
+                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-black focus:border-blue-500 focus:ring-blue-500"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                 />
                 <p>Body of Review</p>
                 <textarea
                   id="outlined-multiline-static"
-                    className='block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500'
+                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
                   value={review}
                   onChange={(e) => setReview(e.target.value)}
                 />
@@ -184,7 +216,7 @@ const ProductPage: React.FC<PageProps> = ({ singleProduct }) => {
 
           {/* reviews section */}
           <h2>Reviews</h2>
-          {singleProduct?.reviews.map((review) =>
+          {reviewProduct?.reviews.map((review) =>
             Object.values(review).map((review: any) => (
               <>
                 <h2 className="font-bold">{review.title}</h2>

@@ -12,14 +12,15 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
+import Router from 'next/router';
 
 function Copyright(props: any) {
   
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
+      <Link color="inherit" href="https://ihsanstore.com/">
+        ihsanStore
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -32,7 +33,7 @@ const theme = createTheme();
 export default function SignUp() {
   const [displayName, setDisplayName] = useState("")
   const [pass, setPass] = useState("");
-  const [email, setEmail] = useState("")
+  const [email, setEmail] = useState<null | string>(null)
 
   const {signUp} = useAuth();
 
@@ -47,8 +48,9 @@ export default function SignUp() {
     setDisplayName(data.get("firstName") as string);
     setPass(data.get('password') as string)
     setEmail(data.get('email') as string)
-    console.log(displayName)
-    await signUp(email, pass, displayName)
+    console.log(`email ${email}`)
+    await signUp(data.get('email'), data.get('password'), data.get("firstName"))
+    Router.push("/")
   };
 
   return (
