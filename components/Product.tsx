@@ -5,6 +5,7 @@ import { Firestore, collection, addDoc, doc, updateDoc, arrayUnion, arrayRemove 
 import { useAuth } from '../context/AuthContext'
 import { database } from '../config/firebase'
 import Link from 'next/link'
+import { Rating } from '@mui/material'
 
 export type Props = {
   productData: any 
@@ -39,7 +40,7 @@ const Product: React.FC<Props | any> = ({ productData }) => {
   
 
   return (
-    <div className="group flex flex-col items-start justify-center gap-3">
+    <div className="relative group flex flex-col items-start justify-center gap-3 w-fit">
       <Link href={`/products/${productData.name}`}>
         <div>
           <img
@@ -49,21 +50,23 @@ const Product: React.FC<Props | any> = ({ productData }) => {
             width={240}
             height={240}
           />
+          {productData["on-sale"] === true ? (<div className='absolute top-0 left-0'>
+            <strong className='rounded-[3px] min-w-[57px] min-h-[30px] py-1 px-2 bg-[#ffd8d7] text-[#e10600]'>Sale</strong>
+          </div>) : null}
+          
           <div className="flex">
-            {[1, 2, 3, 4].map((star, id) => (
-              <BsStarFill key={id} color="yellow" />
-            ))}
+          <Rating name="read-only" value={4.5} readOnly />
           </div>
-          <p>{productData.name}</p>
-          <p>
+          <p className='font-dmsans'>{productData.name}</p>
+          <p className='font-rubik font-bold'>
             <del>56TL</del> from {productData.price}
           </p>
         </div>
       </Link>
-          <div className="flex items-start w-full">
+          <div className="flex items-start justify-between w-[240px]">
             <button
               type="button"
-              className="mr-2 mb-2 rounded-full w-[60%] bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              className="mr-2 mb-2 rounded-full w-[80%] bg-blue-700 px-5 py-2.5 text-center text-sm font-dmsans font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               onClick={() => {setDisabled(true);onAdd(productData, 1)}}
               disabled={disabled}
             >

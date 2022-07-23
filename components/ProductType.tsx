@@ -12,7 +12,11 @@ import { database } from '../config/firebase'
 import { useAuth } from '../context/AuthContext'
 import Product from './Product'
 
-const ProductsGrid: React.FC = () => {
+interface ProductType {
+  type: string
+}
+
+const ProductType: React.FC<ProductType> = ({ type }) => {
   const { user, logIn, signUp, logOut, setShowSignIn } = useAuth()
   const userRef = collection(database, 'products')
   const [products, setProducts] = useState<any[]>([])
@@ -28,11 +32,8 @@ const ProductsGrid: React.FC = () => {
         regions: ['west_coast', 'norcal'],
       })
        */
-      
 
-      const q = query(
-        collection(database, 'products')
-      )
+      const q = query(collection(database, 'products'))
 
       const querySnapshot = await getDocs(q)
       const productsArray: any[] = []
@@ -47,11 +48,18 @@ const ProductsGrid: React.FC = () => {
   }, [])
 
   return (
-    <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4'>
-      {products && products.filter(product => product["on-sale"] === true).map((product) => (<Product key={product.name} productData={product}/>))}
-      
-    </div>
+    <>
+      <h2 className='mt-7 p-7 text-blue-800 font-bold text-lg font-rubik md:font-extrabold md:text-3xl tracking-tight leading-10'>Top {type === 'pc' ? 'Computers' : 'Mobile Phones'}</h2>
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+        {products &&
+          products
+            .filter((product) => product.type === type)
+            .map((product) => (
+              <Product key={product.name} productData={product} />
+            ))}
+      </div>
+    </>
   )
 }
 
-export default ProductsGrid
+export default ProductType
