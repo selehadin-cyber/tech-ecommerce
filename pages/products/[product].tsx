@@ -31,6 +31,7 @@ export interface PageProps {
     image: string
     reviews: any[]
   }
+  reviews: any
   reviewProduct?: {
     price: number
     'on-sale': boolean
@@ -66,7 +67,7 @@ const ProductPage: React.FC<PageProps> = ({ singleProduct }) => {
       /*  const query = `*[_type == "product" && slug.current ==  '${slug}' ][0]`; */
 
       const currentProduct = docSnap.data()
-      setReviewProduct(currentProduct)
+      setReviewProduct(currentProduct as PageProps)
       setWriteReview(false)
     }
     Review()
@@ -216,7 +217,7 @@ const ProductPage: React.FC<PageProps> = ({ singleProduct }) => {
 
           {/* reviews section */}
           <h2>Reviews</h2>
-          {reviewProduct?.reviews.map((review) =>
+          {reviewProduct?.reviews.map((review : any) =>
             Object.values(review).map((review: any) => (
               <>
                 <h2 className="font-bold">{review.title}</h2>
