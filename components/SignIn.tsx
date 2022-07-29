@@ -31,7 +31,7 @@ function Login() {
   }
 
   return (
-    <div className="absolute z-40 right-0 top-10 flex flex-col md:items-center md:justify-center md:bg-transparent">
+    <div className="absolute z-40 right-0 top-4 focus:flex flex-col md:items-center md:justify-center md:bg-transparent">
     
       <form
         onSubmit={handleSubmit(onSubmit)}

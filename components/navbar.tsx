@@ -46,7 +46,7 @@ const Navbar = () => {
         </Link>
         <div className='flex flex-col justify-center items-center'>
           <BsPerson color="#fdc525" size="17px" />
-          <p className="font-dmsans text-sm text-white md:text-xl cursor-pointer">{user ? <span onClick={logOut}>Sign Out</span> : <span onClick={() => setShowSignIn(true)}>Sign in</span> }</p>
+          <p className="font-dmsans text-sm text-white md:text-xl cursor-pointer">{user ? <span onClick={logOut}>Sign Out</span> : <span onClick={() => setShowSignIn((prev: boolean) => !prev)}>Sign in</span> }</p>
         </div>
         <div className='flex flex-col justify-center items-center cursor-pointer' onClick={toggleDrawer("right", true)}>
           <button className='relative'>

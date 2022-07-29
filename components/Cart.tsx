@@ -79,7 +79,7 @@ const Cart = () => {
               cart.map((product: Cart, idx: number) => (
                 <>
                   <div key={idx} className="flex px-5">
-                    <Link href={`/products/${product.name}`} className="pr-8">
+                    <Link href={`/products/${product?.name}`} className="pr-8">
                       <Image
                         loading="lazy"
                         src={product?.image}
