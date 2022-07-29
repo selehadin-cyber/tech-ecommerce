@@ -4,3 +4,4 @@ describe('empty spec', () => {
     cy.contains("Sign in").click()
   })
 })
+export {}
