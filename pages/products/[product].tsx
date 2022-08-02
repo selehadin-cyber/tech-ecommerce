@@ -30,6 +30,8 @@ export interface PageProps {
     name: string
     image: string
     reviews: any[]
+    imageArray: string[]
+    desc: string 
   }
   reviews: any
   reviewProduct?: {
@@ -50,6 +52,7 @@ const ProductPage: React.FC<PageProps> = ({ singleProduct }) => {
   const [qty, setQty] = useState(1)
   const [reviewAdded, setReviewAdded] = useState(false)
   const [reviewProduct, setReviewProduct] = useState<PageProps>()
+  const [imageIndex, setImageIndex] = useState(0)
 
   useEffect(() => {
     const Review = async () => {
@@ -122,19 +125,32 @@ const ProductPage: React.FC<PageProps> = ({ singleProduct }) => {
       <div className="container px-5 pt-20">
         <div className="image-parent relative h-[250px] w-[100%]">
           <Image
-            src={singleProduct?.image as string}
+            src={singleProduct?.imageArray[imageIndex] as string}
             objectFit="contain"
             layout="fill"
-            className="w-full"
+            className="w-full hover:bg-pink-600"
           />
         </div>
+        <div className="small-images-container flex">
+            {singleProduct?.imageArray.map((item, i) => (
+              <img
+                src={item}
+                key={i}
+                alt="carousel-image"
+                className={
+                  i === imageIndex ? "w-12 selected-image border border-blue-800" : "w-12"
+                }
+                onClick={() => setImageIndex(i)}
+              />
+            ))}
+          </div>
         <h1 className="text-center text-xl font-bold">{singleProduct?.name}</h1>
         <div className="flex font-thin">
           <Rating name="read-only" value={4} readOnly />
           <p className="pl-3">{singleProduct?.reviews.length} reviews</p>
         </div>
         <p className="text-lg font-extrabold">{singleProduct?.price} TL</p>
-
+        <p>{singleProduct?.desc}</p>
         <div className="flex items-center justify-center gap-3">
           <input
             className="flex w-20 items-center justify-between rounded-full border border-black py-1.5 px-2"

@@ -9,6 +9,10 @@ module.exports = {
        dmsans: ["DM Sans", "sans-serif"],
        rubik: ['Rubik', "sans-serif"],
       },
+      screens: {
+        "tablet": "800px",
+        "500": "500px"
+      }
     },
   },
   plugins: [],
