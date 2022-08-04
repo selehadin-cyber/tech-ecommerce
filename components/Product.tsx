@@ -40,7 +40,7 @@ const Product: React.FC<Props | any> = ({ productData }) => {
   
 
   return (
-    <div className="relative group flex flex-col items-start justify-center gap-3 w-fit">
+    <div className="relative group mx-auto flex flex-col items-start justify-center gap-3 w-fit">
       <Link href={`/products/${productData.name}`}>
         <div>
           <img
