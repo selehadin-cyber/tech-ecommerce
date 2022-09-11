@@ -47,7 +47,7 @@ const ProductsGrid: React.FC = () => {
   }, [])
 
   return (
-    <div className='grid grid-cols-1 mx-auto w-full gap-6 500:grid-cols-2 tablet:grid-cols-3 lg:grid-cols-4'>
+    <div className='grid grid-cols-auto-fill-275'>
       {products && products.filter(product => product["on-sale"] === true).map((product) => (<Product key={product.name} productData={product}/>))}
       
     </div>
