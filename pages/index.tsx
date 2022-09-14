@@ -18,6 +18,7 @@ const Home: NextPage = () => {
       <Head>
         <title>Ihsan store</title>
         <meta property="og:type" content="website" />
+        <meta property="og:title" content="IhsanStore ,Exellence through technology" />
         <meta
           name="description"
           property="og:description"
