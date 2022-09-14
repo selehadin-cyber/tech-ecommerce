@@ -16,8 +16,24 @@ const Home: NextPage = () => {
   return (
     <div className="flex flex-col items-center justify-center py-2">
       <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
+        <title>Ihsan store</title>
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="IhsanStore ,Exellence through technology" />
+        <meta
+          name="description"
+          property="og:description"
+          content="ihsan store is where you can find the best electronics"
+        />
+        <meta property="og:type" content="video.movie" />
+        <meta
+          property="og:url"
+          content="https://ihsanstore.com/"
+        />
+        <meta
+          name="image"
+          property="og:image"
+          content="https://github.com/selehadin-cyber/ecommerce/raw/main/components/screenshot.png"
+        />
       </Head>
 
       <Navbar />
