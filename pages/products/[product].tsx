@@ -18,6 +18,7 @@ import { useAuth } from '../../context/AuthContext'
 import { TextField } from '@mui/material'
 import Image from 'next/image'
 import Navbar from '../../components/navbar'
+import Link from 'next/link'
 
 interface IParams extends ParsedUrlQuery {
   product: string
@@ -31,7 +32,7 @@ export interface PageProps {
     image: string
     reviews: any[]
     imageArray: string[]
-    desc: string 
+    desc: string
   }
   reviews: any
   reviewProduct?: {
@@ -112,7 +113,7 @@ const ProductPage: React.FC<PageProps> = ({ singleProduct }) => {
         },
       }),
     })
-    setReviewAdded(prev => !prev)
+    setReviewAdded((prev) => !prev)
     // Atomically remove a region from the "regions" array field.
     /* await updateDoc(usersRef, {
       regions: arrayRemove('east_coast'),
@@ -122,66 +123,112 @@ const ProductPage: React.FC<PageProps> = ({ singleProduct }) => {
   return (
     <>
       <Navbar />
-      <div className="container px-5 pt-20">
-        <div className="image-parent relative h-[250px] w-[100%]">
-          <Image
-            src={singleProduct?.imageArray[imageIndex] as string}
-            objectFit="contain"
-            layout="fill"
-            className="w-full hover:bg-pink-600"
-          />
+      <div className="ultra-container px-5 w-full pt-20">
+        <div className="flex py-7 text-[#808080]">
+          <Link href={'/'}>
+            <p className="cursor-pointer">Home</p>
+          </Link>
+          <span className="px-1.5">/</span>
+          <p> Products</p>
+          <span className="px-1.5">/</span>
+          <p>{singleProduct?.name}</p>
         </div>
-        <div className="small-images-container flex">
-            {singleProduct?.imageArray.map((item, i) => (
-              <img
-                src={item}
-                key={i}
-                alt="carousel-image"
-                className={
-                  i === imageIndex ? "w-12 selected-image border border-blue-800" : "w-12"
-                }
-                onClick={() => setImageIndex(i)}
+        <div className="super-container flex flex-wrap mb-8">
+          <div className="left-container flex md:max-w-[calc(50%-10px)] w-full px-3 flex-col">
+            <div className="image-parent relative h-[250px] w-[100%]">
+              <Image
+                src={singleProduct?.imageArray[imageIndex] as string}
+                objectFit="contain"
+                layout="fill"
+                className="w-full hover:bg-pink-600 rounded-md"
               />
-            ))}
+            </div>
+            <div className="small-images-container my-5 flex justify-center px-32">
+              {singleProduct?.imageArray.map((item, i) => (
+                <img
+                  src={item}
+                  key={i}
+                  alt="carousel-image"
+                  className={
+                    i === imageIndex
+                      ? 'selected-image m-1 w-16 border border-blue-800'
+                      : 'm-1 w-16'
+                  }
+                  onClick={() => setImageIndex(i)}
+                />
+              ))}
+            </div>
           </div>
-        <h1 className="text-center text-xl font-bold">{singleProduct?.name}</h1>
-        <div className="flex font-thin">
-          <Rating name="read-only" value={4} readOnly />
-          <p className="pl-3">{singleProduct?.reviews.length} reviews</p>
-        </div>
-        <p className="text-lg font-extrabold">{singleProduct?.price} TL</p>
-        <p>{singleProduct?.desc}</p>
-        <div className="flex items-center justify-center gap-3">
-          <input
-            className="flex w-20 items-center justify-between rounded-full border border-black py-1.5 px-2"
-            name="quantity"
-            value={qty}
-            type="number"
-            onChange={(e) => setQty(parseInt(e.target.value))}
-          />
-          <button
-            type="button"
-            className="mr-2 rounded-full bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            onClick={() => onAdd(singleProduct, qty)}
-          >
-            Add to Cart
-          </button>
-          <button
-            onClick={() => addFav(singleProduct)}
-            type="button"
-            className="h-10 w-10 rounded-full bg-gray-300 hover:bg-pink-300"
-          >
-            <BsHeart className="m-auto" />
-          </button>
+          <div className="right-container md:max-w-[calc(50%+10px)] px-3">
+            <h1 className="mb-5 text-left font-rubik text-[24px] font-bold">
+              {singleProduct?.name}
+            </h1>
+            <div className="flex font-thin mb-5">
+              <Rating name="read-only" value={4} readOnly />
+              <p className="pl-3 text-[#808080]">{singleProduct?.reviews.length} reviews</p>
+            </div>
+
+            <div className="product-info mb-5">
+              <div className="vendor-product">
+                <label className="text-[#808080]">Vendor: </label>
+                <span>
+                  <a
+                    href="/"
+                    title="Ihsan - Technologies"
+                  >
+                     Ihsan - Technologies
+                  </a>
+                </span>
+              </div>
+              <div className="sku-product">
+                <label className="text-[#808080]">SKU: </label>
+                <span>KJSU-58636</span>
+              </div>
+              <div className="product-inventory">
+                <label className="text-[#808080]">Availability: </label>
+                <span>10 In stock</span>
+              </div>
+              <div className="product-type">
+                <label className="text-[#808080]">Product Type: </label>
+                <span>Technology</span>
+              </div>
+            </div>
+
+            <p className="text-lg font-extrabold font-rubik">{singleProduct?.price} TL</p>
+            <p className='mb-5 font-dmsans text-[#505050]'>{singleProduct?.desc}</p>
+            <div className="flex items-center justify-center gap-3">
+              <input
+                className="flex w-20 items-center justify-between rounded-full border border-black py-1.5 px-3 h-14"
+                name="quantity"
+                value={qty}
+                type="number"
+                onChange={(e) => setQty(parseInt(e.target.value))}
+              />
+              <button
+                type="button"
+                className="mr-2 w-full rounded-full bg-blue-700 px-5 py-5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                onClick={() => onAdd(singleProduct, qty)}
+              >
+                Add to Cart
+              </button>
+              <button
+                onClick={() => addFav(singleProduct)}
+                type="button"
+                className="h-14 min-w-[56px] rounded-full bg-gray-300 hover:bg-pink-300"
+              >
+                <BsHeart className="m-auto" size={23}/>
+              </button>
+            </div>
+          </div>
         </div>
 
         <div className="review-section">
           <h2 className="text-2xl font-bold">Customer Reviews</h2>
-          <div className="flex items-center justify-center gap-3">
+          <div className="flex items-center justify-start gap-3">
             <Rating name="read-only" value={4} readOnly />
             <p>Based on {singleProduct?.reviews.length} reviews</p>
             <button
-              className="rounded-full border border-black py-1 px-2"
+              className="rounded-full border border-black py-1 px-3 h-11"
               onClick={() => setWriteReview((prev) => !prev)}
             >
               Write a review
@@ -233,7 +280,7 @@ const ProductPage: React.FC<PageProps> = ({ singleProduct }) => {
 
           {/* reviews section */}
           <h2>Reviews</h2>
-          {reviewProduct?.reviews.map((review : any) =>
+          {reviewProduct?.reviews.map((review: any) =>
             Object.values(review).map((review: any) => (
               <>
                 <h2 className="font-bold">{review.title}</h2>
