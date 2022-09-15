@@ -17,7 +17,7 @@ interface ProductType {
 }
 
 const ProductType: React.FC<ProductType> = ({ type }) => {
-  const { user, logIn, signUp, logOut, setShowSignIn } = useAuth()
+  const { setAllProducts } = useAuth()
   const userRef = collection(database, 'products')
   const [products, setProducts] = useState<any[]>([])
 
@@ -43,6 +43,7 @@ const ProductType: React.FC<ProductType> = ({ type }) => {
         console.log(products)
       })
       setProducts(productsArray)
+      setAllProducts(productsArray)
     }
     base()
   }, [])

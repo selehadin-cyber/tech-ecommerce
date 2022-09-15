@@ -1,62 +1,134 @@
 import { doc, getDoc } from 'firebase/firestore'
 import Image from 'next/image'
 import Link from 'next/link'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { BsHeart, BsPerson, BsCart3, BsSearch } from 'react-icons/bs'
 import { database } from '../config/firebase'
 import { useAuth } from '../context/AuthContext'
+import { Product } from '../pages/products/[product]'
 import Cart from './Cart'
-import logo from "./logo.png"
-
+import logo from './logo.png'
 
 const Navbar = () => {
-  const {user , favorites, logOut, setShowSignIn, totalQuantities, toggleDrawer} = useAuth();
-  
+  const {
+    user,
+    favorites,
+    logOut,
+    setShowSignIn,
+    totalQuantities,
+    toggleDrawer,
+    allProducts,
+  } = useAuth()
+  const [display, setDisplay] = useState(false)
+  const [search, setSearch] = useState('')
+  const wrapperRef = useRef(null)
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside)
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [])
+
+  const handleClickOutside = (e: Event) => {
+    const { current: wrap } = wrapperRef
+    if (wrap && !wrap.contains(e.target)) {
+      setDisplay(false)
+    }
+  }
   console.log(favorites)
-  
+
+  const setInput = (text: string) => {
+    setSearch(text)
+    setDisplay(false)
+  }
+
   return (
-    <div className="absolute top-0 flex w-full flex-row justify-between items-center gap-5 bg-[#161880] p-2.5 z-50">
-        <Link href={"/"}>
-          <div className="logo w-[110px] md:w-[140px] p-2 cursor-pointer">
-              <Image src={logo} alt="logo" />
-          </div>
-        </Link>
+    <div className="absolute top-0 z-50 flex w-full flex-row items-center justify-between gap-5 bg-[#161880] p-2.5">
+      <Link href={'/'}>
+        <div className="logo w-[110px] cursor-pointer p-2 md:w-[140px]">
+          <Image src={logo} alt="logo" />
+        </div>
+      </Link>
       <div className="input relative hidden md:flex">
         <input
           type="search"
           name="search"
           id="search"
-          className="rounded-full h-6 md:h-10 md:text-lg text-xs outline-none w-52 p-3 font-light"
-          placeholder='search the store'
+          value={search}
+          ref={wrapperRef}
+          onClick={() => setDisplay(!display)}
+          onChange={(e) => setSearch(e.target.value)}
+          className="h-12 w-full rounded-full p-3 text-xs font-light outline-none md:h-12 md:text-lg"
+          placeholder="search the store"
         />
-        <BsSearch className='absolute right-2 top-[20%]'/>
+        <BsSearch size={23} className="absolute right-3 top-[23%]" />
+        <ul className='absolute flex flex-col top-full right-0 bg-white w-[246px]'>{display &&
+        allProducts
+          .filter(({ name }) => name.indexOf(search.toLowerCase()) > -1)
+          .map((product: Product) => (
+            <Link href={`/products/${product.name}`}>
+            <p className='w-full flex' onClick={() => setInput(product.name)} tabIndex={0}>
+            <div className="relative w-10 h-10">
+            <Image
+              src={product.image}
+              layout={"fill"}
+              alt="product-image"
+            />
+          </div>
+              <p>{product.name}</p>
+            </p>
+            </Link>
+          ))}</ul>
       </div>
       <div className="flex flex-row gap-5">
         <span className="hidden font-dmsans text-sm text-white md:text-lg">
           Available 24/7 at
           <br />
-          <a href="tel:(+84)%2090%2012345" className='font-bold text-sm md:text-lg'>(+84) 90 12345</a>
+          <a
+            href="tel:(+84)%2090%2012345"
+            className="text-sm font-bold md:text-lg"
+          >
+            (+84) 90 12345
+          </a>
         </span>
 
-        <Link href={"/favorites"}>
-          <div className='flex flex-col justify-center items-center cursor-pointer'>
+        <Link href={'/favorites'}>
+          <div className="flex cursor-pointer flex-col items-center justify-center">
             <BsHeart color="#fdc525" size="17px" />
-            <p className="font-dmsans text-sm text-white md:text-xl">Wish Lists {favorites.length}</p>
+            <p className="font-dmsans text-sm text-white md:text-xl">
+              Wish Lists {favorites.length}
+            </p>
           </div>
         </Link>
-        <div className='flex flex-col justify-center items-center'>
+        <div className="flex flex-col items-center justify-center">
           <BsPerson color="#fdc525" size="17px" />
-          <p className="font-dmsans text-sm text-white md:text-xl cursor-pointer">{user ? <span onClick={logOut}>Sign Out</span> : <span onClick={() => setShowSignIn((prev: boolean) => !prev)}>Sign in</span> }</p>
+          <p className="cursor-pointer font-dmsans text-sm text-white md:text-xl">
+            {user ? (
+              <span onClick={logOut}>Sign Out</span>
+            ) : (
+              <span onClick={() => setShowSignIn((prev: boolean) => !prev)}>
+                Sign in
+              </span>
+            )}
+          </p>
         </div>
-        <div className='flex flex-col justify-center items-center cursor-pointer' onClick={toggleDrawer("right", true)}>
-          <button className='relative'>
-              <BsCart3 color="#fdc525" size="17px" />
-              <span className='absolute text-[10px] text-white -right-2 -top-1.5 bg-[#0a6cdc] w-4 h-4 rounded-full text-center font-semibold'>{totalQuantities}</span>
+        <div
+          className="flex cursor-pointer flex-col items-center justify-center"
+          onClick={toggleDrawer('right', true)}
+        >
+          <button className="relative">
+            <BsCart3 color="#fdc525" size="17px" />
+            <span className="absolute -right-2 -top-1.5 h-4 w-4 rounded-full bg-[#0a6cdc] text-center text-[10px] font-semibold text-white">
+              {totalQuantities}
+            </span>
           </button>
           <p className="font-dmsans text-sm text-white md:text-xl">Carts</p>
         </div>
       </div>
       <Cart />
+      
     </div>
   )
 }

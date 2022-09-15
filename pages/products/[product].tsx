@@ -23,6 +23,16 @@ import Link from 'next/link'
 interface IParams extends ParsedUrlQuery {
   product: string
 }
+export type Product = {
+  price: number
+  'on-sale': boolean
+  type: string
+  name: string
+  image: string
+  reviews: any[]
+  imageArray: string[]
+  desc: string}
+
 export interface PageProps {
   singleProduct?: {
     price: number
