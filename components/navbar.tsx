@@ -24,19 +24,29 @@ const Navbar = () => {
   const wrapperRef = useRef(null)
 
   useEffect(() => {
+
+    if (search.length > 0) {
+      setDisplay(true)
+    } else if (search.length > 0) {
+      setDisplay(false)
+    }
+  }, [search])
+  
+
+  /* useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside)
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside)
     }
-  }, [])
+  }, []) */
 
-  const handleClickOutside = (e: Event) => {
+  /* const handleClickOutside = (e: Event) => {
     const { current: wrap } = wrapperRef
     if (wrap && !wrap.contains(e.target)) {
       setDisplay(false)
     }
-  }
+  } */
   console.log(favorites)
 
   const setInput = (text: string) => {
@@ -58,27 +68,27 @@ const Navbar = () => {
           id="search"
           value={search}
           ref={wrapperRef}
-          onClick={() => setDisplay(!display)}
           onChange={(e) => setSearch(e.target.value)}
           className="h-12 w-full rounded-full p-3 text-xs font-light outline-none md:h-12 md:text-lg"
           placeholder="search the store"
         />
         <BsSearch size={23} className="absolute right-3 top-[23%]" />
-        <ul className='absolute flex flex-col top-full right-0 bg-white w-[246px]'>{display &&
+        <ul className='absolute flex flex-col top-[calc(100%+10px)] right-0 bg-white w-[246px]  rounded-md'>{display &&
         allProducts
-          .filter(({ name }) => name.indexOf(search.toLowerCase()) > -1)
+          .filter(({ name }: {name: string} ) => name.toLowerCase().indexOf(search.toLowerCase()) > -1)
           .map((product: Product) => (
             <Link href={`/products/${product.name}`}>
-            <p className='w-full flex' onClick={() => setInput(product.name)} tabIndex={0}>
-            <div className="relative w-10 h-10">
+            <li className='group w-full flex items-center hover:bg-blue-800 hover:text-white rounded-md' onClick={() => {setInput(product.name);setDisplay(false)}} tabIndex={0}>
+            <div className="relative w-10 h-10 pl-1">
             <Image
               src={product.image}
               layout={"fill"}
               alt="product-image"
+              className='group-hover:bg-pink-600 rounded-md'
             />
           </div>
-              <p>{product.name}</p>
-            </p>
+              <p className='pl-2'>{product.name}</p>
+            </li>
             </Link>
           ))}</ul>
       </div>
