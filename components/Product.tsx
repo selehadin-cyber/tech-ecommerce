@@ -84,7 +84,7 @@ const Product: React.FC<Props | any> = ({ productData }) => {
             setDisabled(true)
             onAdd(productData, 1)
           }}
-          disabled={disabled}
+          disabled={false}
         >
           Add to Cart
         </button>
