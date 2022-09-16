@@ -39,6 +39,7 @@ export const AuthContextProvider = ({
   const [totalQuantities, setTotalQuantities] = useState(0)
   const [favorites, setFavorites] = useState([])
   const [favoriteClicked, setFavoriteClicked] = useState(false)
+  const [allProducts, setAllProducts] = useState([])
   const [state, setState] = useState({
     top: false,
     left: false,
@@ -204,7 +205,9 @@ export const AuthContextProvider = ({
         toggleDrawer,
         state,
         favoriteClicked,
-        setFavoriteClicked
+        setFavoriteClicked,
+        allProducts,  
+        setAllProducts
       }}
     >
       {children}
