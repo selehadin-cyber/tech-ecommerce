@@ -10,6 +10,8 @@ import {
   arrayUnion,
   arrayRemove,
 } from 'firebase/firestore'
+import toast, { Toaster } from 'react-hot-toast'
+
 import { useAuth } from '../context/AuthContext'
 import { database } from '../config/firebase'
 import Link from 'next/link'
@@ -31,23 +33,42 @@ const Product: React.FC<Props | any> = ({ productData }) => {
   const { onAdd } = useAuth()
   const [disabled, setDisabled] = useState(false)
 
-  console.log(productData)
   const addFav = async () => {
     // Atomically add a new region to the "regions" array field.
-    const usersRef = doc(database, 'user', user.uid)
-    await updateDoc(usersRef, {
-      fav: arrayUnion(productData),
-    })
-
-    // Atomically remove a region from the "regions" array field.
-    /* await updateDoc(usersRef, {
-      regions: arrayRemove('east_coast'),
-    }) */
+    
+    if (!user) {
+      //error message when a user tries to favorite an item with out loging in
+      toast('You need to sign in to favorite an item🤔', {
+        style: {
+          background: 'red',
+          color: 'white',
+          fontWeight: 'bolder',
+          fontSize: '17px',
+          padding: '20px',
+        },
+      })
+    } else {
+      const usersRef = doc(database, 'user', user.uid)
+      await updateDoc(usersRef, {
+        fav: arrayUnion(productData),
+      })
+      toast("Item added to favorites 👏!", {
+        duration: 1000,
+        style: {
+          background: "green",
+          color: "white",
+          fontWeight: "bolder",
+          fontSize: "17px",
+          padding: "20px",
+        },
+      });
+    }
     setFavoriteClicked((prev: boolean) => !prev)
   }
 
   return (
     <div className="group relative mx-auto my-2 flex w-fit flex-col items-start justify-center gap-3">
+      <Toaster position="bottom-center" />
       <Link href={`/products/${productData.name}`}>
         <div>
           <img
@@ -66,12 +87,20 @@ const Product: React.FC<Props | any> = ({ productData }) => {
           ) : null}
 
           <div className="flex flex-col gap-3">
-            <Rating name="read-only" value={4.5} readOnly />
+            <Rating name="read-only" value={productData.average} readOnly />
             <p className="font-dmsans">{productData.name}</p>
             <p className="font-rubik">
-            {productData['on-sale'] === true ? (
-            <del>10,300TL</del>
-          ) : null} from <span className={productData['on-sale'] ? "font-bold text-red-600" : "font-bold"}>{productData.price}TL</span>
+              {productData['on-sale'] === true ? <del>10,300TL</del> : null}{' '}
+              from{' '}
+              <span
+                className={
+                  productData['on-sale']
+                    ? 'font-bold text-red-600'
+                    : 'font-bold'
+                }
+              >
+                {productData.price}TL
+              </span>
             </p>
           </div>
         </div>

@@ -15,8 +15,6 @@ function Login() {
   const [login, setLogin] = useState(false);
 
   const {user ,logIn, signUp, logOut, setShowSignIn} = useAuth();
-  console.log(user);
-
   const {
     register,
     handleSubmit,

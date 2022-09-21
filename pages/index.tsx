@@ -12,7 +12,6 @@ import { useAuth } from '../context/AuthContext'
 
 const Home: NextPage = () => {
   const {user ,logIn, signUp, logOut, showSignIn} = useAuth();
-  console.log(showSignIn)
   return (
     <div className="flex flex-col items-center justify-center py-2">
       <Head>

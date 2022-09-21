@@ -40,15 +40,9 @@ export default function SignUp() {
   const handleSubmit = async (event: any) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-      displayName: data.get("firstName")
-    });
     setDisplayName(data.get("firstName") as string);
     setPass(data.get('password') as string)
     setEmail(data.get('email') as string)
-    console.log(`email ${email}`)
     await signUp(data.get('email'), data.get('password'), data.get("firstName"))
     Router.push("/")
   };
