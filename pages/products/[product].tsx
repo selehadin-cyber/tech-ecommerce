@@ -43,6 +43,7 @@ export interface PageProps {
     reviews: any[]
     imageArray: string[]
     desc: string
+    average: number
   }
   reviews: any
   reviewProduct?: {
@@ -112,7 +113,6 @@ const ProductPage: React.FC<PageProps> = ({ singleProduct }) => {
     const Name = await getUserName()
     const userUid = user.uid
     const usersRef = doc(database, 'products', product.name)
-    console.log(Name)
     await updateDoc(usersRef, {
       reviews: arrayUnion({
         [Name]: {
@@ -174,7 +174,7 @@ const ProductPage: React.FC<PageProps> = ({ singleProduct }) => {
               {singleProduct?.name}
             </h1>
             <div className="flex font-thin mb-5">
-              <Rating name="read-only" value={4} readOnly />
+              <Rating name="read-only" value={singleProduct?.average} readOnly />
               <p className="pl-3 text-[#808080]">{singleProduct?.reviews.length} reviews</p>
             </div>
 
@@ -216,7 +216,7 @@ const ProductPage: React.FC<PageProps> = ({ singleProduct }) => {
               />
               <button
                 type="button"
-                className="mr-2 w-full rounded-full bg-blue-700 px-5 py-5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                className="mr-2 w-full shadow-xl rounded-full bg-blue-700 px-5 py-5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 onClick={() => onAdd(singleProduct, qty)}
               >
                 Add to Cart
@@ -255,7 +255,7 @@ const ProductPage: React.FC<PageProps> = ({ singleProduct }) => {
                   <p>Rating</p>
                   <Rating
                     name="simple-controlled"
-                    value={value}
+                    value={singleProduct?.average}
                     onChange={(event, newValue) => {
                       setValue(newValue)
                     }}
@@ -291,13 +291,13 @@ const ProductPage: React.FC<PageProps> = ({ singleProduct }) => {
           {/* reviews section */}
           <h2>Reviews</h2>
           {reviewProduct?.reviews.map((review: any) =>
-            Object.values(review).map((review: any) => (
-              <>
+            Object.values(review).map((review: any, id) => (
+              <div key={id}>
                 <h2 className="font-bold">{review.title}</h2>
                 <p className="text-sm">{review.name}</p>
                 <Rating name="read-only" value={review.star} readOnly />
                 <p>review: {review.review}</p>
-              </>
+              </div>
             ))
           )}
         </div>
@@ -313,7 +313,6 @@ export const getStaticPaths = async () => {
   querySnapshot.forEach((doc) => {
     // doc.data() is never undefined for query doc snapshots
     productsArray.push(doc.data().name)
-    console.log(productsArray)
   })
   const paths = productsArray.map((product: any) => ({
     params: {

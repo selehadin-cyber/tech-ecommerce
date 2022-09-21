@@ -28,8 +28,6 @@ const Cart = () => {
   } = useAuth()
   const [qty, setQty] = useState(1)
 
-  console.log(!cart)
-
   const handleCheckout = async () => {
     const stripe = await getStripe()
 
@@ -44,7 +42,6 @@ const Cart = () => {
     if (response.status === 500) return
 
     const data = await response.json()
-    console.log(data.id)
     stripe.redirectToCheckout({ sessionId: data.id })
   }
 

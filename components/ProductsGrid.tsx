@@ -39,7 +39,6 @@ const ProductsGrid: React.FC = () => {
       querySnapshot.forEach((doc) => {
         // doc.data() is never undefined for query doc snapshots
         productsArray.push(doc.data())
-        console.log(products)
       })
       setProducts(productsArray)
     }

@@ -47,7 +47,6 @@ const Navbar = () => {
       setDisplay(false)
     }
   } */
-  console.log(favorites)
 
   const setInput = (text: string) => {
     setSearch(text)
@@ -77,7 +76,7 @@ const Navbar = () => {
         allProducts
           .filter(({ name }: {name: string} ) => name.toLowerCase().indexOf(search.toLowerCase()) > -1)
           .map((product: Product) => (
-            <Link href={`/products/${product.name}`}>
+            <Link href={`/products/${product.name}`} key={product.name}>
             <li className='group w-full flex items-center hover:bg-blue-800 hover:text-white rounded-md' onClick={() => {setInput(product.name);setDisplay(false)}} tabIndex={0}>
             <div className="relative w-10 h-10 pl-1">
             <Image

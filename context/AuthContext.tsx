@@ -95,7 +95,6 @@ export const AuthContextProvider = ({
           const userSnap = await getDoc(docRef)
   
           if (userSnap.exists()) {
-            console.log(userSnap.get('fav'))
             setFavorites(userSnap.get('fav'))
           } else {
             // doc.data() will be undefined in this case
@@ -140,7 +139,6 @@ export const AuthContextProvider = ({
     const checkProductInCart = cart.find(
       (item: Props) => item.name === product.name
     )
-    console.log(checkProductInCart)
     setTotalPrice((prev) => prev + product.price * quantity)
     setTotalQuantities((prev) => prev + quantity)
     //TODO : prevent adding the same product as separate product in cart
