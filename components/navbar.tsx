@@ -4,7 +4,7 @@ import Link from 'next/link'
 import React, { useEffect, useRef, useState } from 'react'
 import { BsHeart, BsPerson, BsCart3, BsSearch } from 'react-icons/bs'
 import { database } from '../config/firebase'
-import { useAuth } from '../context/AuthContext'
+import { Context, useAuth } from '../context/AuthContext'
 import { Product } from '../pages/products/[product]'
 import Cart from './Cart'
 import logo from './logo.png'
@@ -17,8 +17,8 @@ const Navbar = () => {
     setShowSignIn,
     totalQuantities,
     toggleDrawer,
-    allProducts,
-  } = useAuth()
+    allProducts
+  } = useAuth() as Context
   const [display, setDisplay] = useState(false)
   const [search, setSearch] = useState('')
   const wrapperRef = useRef(null)

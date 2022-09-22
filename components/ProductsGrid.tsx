@@ -10,12 +10,12 @@ import {
 } from 'firebase/firestore'
 import { database } from '../config/firebase'
 import { useAuth } from '../context/AuthContext'
-import Product from './Product'
+import Product, { Props } from './Product'
 
 const ProductsGrid: React.FC = () => {
   const { user, logIn, signUp, logOut, setShowSignIn } = useAuth()
   const userRef = collection(database, 'products')
-  const [products, setProducts] = useState<any[]>([])
+  const [products, setProducts] = useState<Props[]>([])
 
   useEffect(() => {
     const base = async () => {
@@ -47,7 +47,7 @@ const ProductsGrid: React.FC = () => {
 
   return (
     <div className='grid grid-cols-auto-fill-275'>
-      {products && products.filter(product => product["on-sale"] === true).map((product) => (<Product key={product.name} productData={product}/>))}
+      {products && products.filter(product => product["on-sale"] === true).map((product: Props) => (<Product key={product.name} productData={product}/>))}
       
     </div>
   )

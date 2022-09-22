@@ -21,6 +21,28 @@ import { useCollection } from 'react-firebase-hooks/firestore'
 import { Props } from '../components/Product'
 
 type Anchor = "right"
+export type Context = {
+        user: any
+        logIn: any
+        signUp: any
+        logOut: any
+        showSignIn: boolean
+        setShowSignIn: any
+        favorites: any
+        addFav: any
+        cart: Props[]
+        setCart: any
+        onAdd: any
+        totalPrice: any
+        totalQuantities: number
+        toggleCartItemQuantity: number
+        toggleDrawer: any
+        state: any
+        favoriteClicked: boolean
+        setFavoriteClicked: any
+        allProducts: any
+        setAllProducts: any
+}
 
 const AuthContext = createContext<any>({})
 
@@ -34,7 +56,7 @@ export const AuthContextProvider = ({
   const [user, setUser] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [showSignIn, setShowSignIn] = useState(false)
-  const [cart, setCart] = useState<any[]>([])
+  const [cart, setCart] = useState<Props[]>([])
   const [totalPrice, setTotalPrice] = useState(0)
   const [totalQuantities, setTotalQuantities] = useState(0)
   const [favorites, setFavorites] = useState([])
@@ -47,7 +69,7 @@ export const AuthContextProvider = ({
     right: false,
   });
 
-  let foundProduct: any
+  let foundProduct: Props
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -108,7 +130,7 @@ export const AuthContextProvider = ({
       return () => favoritesLoad()
   }, [favoriteClicked])
 
-  const addFav = async (productData: any) => {
+  const addFav = async (productData: Props) => {
     // Atomically add a new region to the "regions" array field.
     const usersRef = doc(database, 'user', user.uid)
     await updateDoc(usersRef, {
@@ -143,13 +165,13 @@ export const AuthContextProvider = ({
     setTotalQuantities((prev) => prev + quantity)
     //TODO : prevent adding the same product as separate product in cart
     if (checkProductInCart) {
-      const updatedCartItems = cart.map((cartProduct: any) => {
+      const updatedCartItems = cart.map((cartProduct: Props) => {
         if (cartProduct.name === product.name)
           return {
             ...cartProduct,
             quantity: cartProduct.quantity + quantity,
           }
-      })
+      }) as Props[]
       setCart(updatedCartItems)
     } else {
       product.quantity = quantity
@@ -158,7 +180,7 @@ export const AuthContextProvider = ({
   }
 
   const toggleCartItemQuantity = (name: string, value: string) => {
-    foundProduct = cart.find((item) => item.name === name)
+    foundProduct = cart.find((item) => item.name === name) as Props
     if (value === 'add') {
       setCart(
         cart.map((item, i) =>

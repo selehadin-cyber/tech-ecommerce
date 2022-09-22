@@ -10,7 +10,7 @@ import {
 } from 'firebase/firestore'
 import { database } from '../config/firebase'
 import { useAuth } from '../context/AuthContext'
-import Product from './Product'
+import Product, { Props } from './Product'
 
 interface ProductType {
   type: string
@@ -19,7 +19,7 @@ interface ProductType {
 const ProductType: React.FC<ProductType> = ({ type }) => {
   const { setAllProducts } = useAuth()
   const userRef = collection(database, 'products')
-  const [products, setProducts] = useState<any[]>([])
+  const [products, setProducts] = useState<Props[]>([])
 
   useEffect(() => {
     const base = async () => {
