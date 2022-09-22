@@ -42,7 +42,7 @@ const Cart = () => {
     if (response.status === 500) return
 
     const data = await response.json()
-    stripe.redirectToCheckout({ sessionId: data.id })
+    stripe?.redirectToCheckout({ sessionId: data.id })
   }
 
   return (
