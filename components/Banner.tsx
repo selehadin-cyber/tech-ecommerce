@@ -14,19 +14,19 @@ const Banner = () => {
         autoPlay={false}
         infiniteLoop
         showStatus={false}
-        showIndicators={true}
+        showIndicators={false}
         showThumbs={false}
         interval={3000}
       >
         <div className="relative">
           <Image loading="lazy" src={banner} alt="" />
           <div  className='sm:text-xl font-extrabold absolute z-50 xs:top-0 md:top-[15%] xs:left-[15px] md:left-[50px] text-white flex flex-col gap-3'>
-            <div className='font-rubik md:text-5xl sm:text-2xl text-left my-2 py-2'>
+            <div className='font-rubik sm:mb-2 sm:py-2 xs:-mb-3 md:text-5xl sm:text-2xl text-left my-2 py-2'>
                 <h2 className='md:pb-3 sm:pb-1'><strong className='text-[#10ffda]'>Huge Saving</strong> on </h2>
                 
                 <h2>UHD Televisions</h2>
             </div>
-            <p className='font-light xs:pb-0 sm:pb-1 md:pb-12 font-dmsans text-[18px] text-left'>Sale up to 70% off on selected items*</p>
+            <p className='font-light xs:pb-0 xs:text-xs sm:pb-1 md:pb-12 font-dmsans text-[18px] text-left'>Sale up to 70% off on selected items*</p>
             <a href={"/"} className="font-dmsans hidden xl:block font-semibold bg-transparent hover:bg-white hover:text-black px-2 py-2 w-1/2 border border-white hover:border-transparent rounded-full" >
             Shop Now
             </a>

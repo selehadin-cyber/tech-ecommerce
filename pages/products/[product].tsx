@@ -19,19 +19,27 @@ import { TextField } from '@mui/material'
 import Image from 'next/image'
 import Navbar from '../../components/navbar'
 import Link from 'next/link'
+import { Props } from '../../components/Product'
 
 interface IParams extends ParsedUrlQuery {
   product: string
 }
+
+export type Review = {
+  any: string
+}
+
 export type Product = {
   price: number
   'on-sale': boolean
   type: string
   name: string
   image: string
-  reviews: any[]
+  reviews: Review[]
   imageArray: string[]
-  desc: string}
+  desc: string
+  average: number
+}
 
 export interface PageProps {
   singleProduct?: {
@@ -314,7 +322,7 @@ export const getStaticPaths = async () => {
     // doc.data() is never undefined for query doc snapshots
     productsArray.push(doc.data().name)
   })
-  const paths = productsArray.map((product: any) => ({
+  const paths = productsArray.map((product: Props) => ({
     params: {
       product: product,
     },

@@ -12,7 +12,8 @@ module.exports = {
       screens: {
         "tablet": "800px",
         "500": "500px",
-        "xs": {'max': '767px'}
+        "xs": {'max': '767px'},
+        "xxs": "100px"
       },
       gridTemplateColumns: {
         'auto-fill-275': 'repeat(auto-fill, minmax(275px, 1fr))',
