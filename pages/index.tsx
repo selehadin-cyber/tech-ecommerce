@@ -13,7 +13,7 @@ import { useAuth } from '../context/AuthContext'
 const Home: NextPage = () => {
   const {user ,logIn, signUp, logOut, showSignIn} = useAuth();
   return (
-    <div className="flex flex-col items-center justify-center py-2">
+    <div className="flex flex-col items-center justify-center py-2 mb-32">
       <Head>
         <title>Ihsan store</title>
         <meta property="og:type" content="website" />

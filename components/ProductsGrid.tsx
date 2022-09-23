@@ -46,7 +46,7 @@ const ProductsGrid: React.FC = () => {
   }, [])
 
   return (
-    <div className='grid grid-cols-auto-fill-275'>
+    <div className='grid grid-cols-auto-fit-275'>
       {products && products.filter(product => product["on-sale"] === true).map((product: Props) => (<Product key={product.name} productData={product}/>))}
       
     </div>

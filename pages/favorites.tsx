@@ -2,6 +2,7 @@ import { arrayRemove, arrayUnion, doc, updateDoc } from 'firebase/firestore'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
+import { BsFillTrashFill } from "react-icons/bs"
 import Navbar from '../components/navbar'
 import { Props } from '../components/Product'
 import { database } from '../config/firebase'
@@ -33,29 +34,30 @@ const Favorites = () => {
         <p> Favorites</p>
       </div>
       <h2 className="px-9 py-3 text-lg font-bold">FAVORITES</h2>
-      <div className="grid grid-cols-4 border border-b-slate-400 border-t-transparent bg-[#fafafa] py-3 px-9 font-bold text-[#505050]">
-        <h4>IMAGE</h4>
-        <h4>PRODUCT NAME</h4>
-        <h4>PRICE</h4>
-        <h4>REMOVE</h4>
-      </div>
-      {favorites.map((item: Props) => (
-        <div key={item.name} className="grid grid-cols-4 py-3 px-9 font-bold">
-          <Link href={`/products/${item.name}`}>
-            <div className="relative h-16 w-16 cursor-pointer">
-              <Image src={item.image} layout={'fill'} alt="product-image" />
-            </div>
-          </Link>
-          <Link href={`/products/${item.name}`}>
-            <h4 className="font-normal cursor-pointer">{item.name}</h4>
-          </Link>
-
-          <h4>{item.price} TL</h4>
-          <h4 className="cursor-pointer" onClick={() => removeFav(item)}>
-            REMOVE
-          </h4>
+      <div className="mb-32 min-w-[424px] overflow-scroll">
+        <div className="grid grid-cols-4 border border-b-slate-400 border-t-transparent bg-[#fafafa] py-3 px-9 font-bold text-[#505050]">
+          <h4>IMAGE</h4>
+          <h4>PRODUCT NAME</h4>
+          <h4>PRICE</h4>
+          <h4>REMOVE</h4>
         </div>
-      ))}
+        {favorites.map((item: Props) => (
+          <div key={item.name} className="grid grid-cols-4 items-center py-3 px-9 font-bold border-b-2">
+            <Link href={`/products/${item.name}`}>
+              <div className="relative h-16 w-16 cursor-pointer">
+                <Image src={item.image} layout={'fill'} alt="product-image" />
+              </div>
+            </Link>
+            <Link href={`/products/${item.name}`}>
+              <h4 className="font-normal cursor-pointer">{item.name}</h4>
+            </Link>
+            <h4>{item.price} TL</h4>
+            <h4 className="cursor-pointer" onClick={() => removeFav(item)}>
+            <BsFillTrashFill />
+            </h4>
+          </div>
+        ))}
+      </div>
     </>
   )
 }
