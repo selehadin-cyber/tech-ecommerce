@@ -50,7 +50,7 @@ const ProductType: React.FC<ProductType> = ({ type }) => {
   return (
     <>
       <h2 className='mt-7 p-7 text-blue-800 font-bold text-lg font-rubik md:font-extrabold md:text-3xl tracking-tight leading-10'>Top {type === 'pc' ? 'Computers' : 'Mobile Phones'}</h2>
-      <div className="grid grid-cols-auto-fill-275">
+      <div className="grid grid-cols-auto-fit-275">
         {products &&
           products
             .filter((product) => product.type === type)
