@@ -5,11 +5,12 @@ import React from 'react'
 import { BsFillTrashFill } from "react-icons/bs"
 import Navbar from '../components/navbar'
 import { Props } from '../components/Product'
+import Login from '../components/SignIn'
 import { database } from '../config/firebase'
-import { useAuth } from '../context/AuthContext'
+import { Context, useAuth } from '../context/AuthContext'
 
 const Favorites = () => {
-  const { user, favorites, setFavoriteClicked } = useAuth()
+  const { user, favorites, setFavoriteClicked, showSignIn } = useAuth() as Context
   const removeFav = async (item: Props) => {
     // Atomically add a new region to the "regions" array field.
     const usersRef = doc(database, 'user', user.uid)
@@ -26,6 +27,7 @@ const Favorites = () => {
   return (
     <>
       <Navbar />
+      {showSignIn ? <Login />: null}
       <div className="flex px-9 pt-32">
         <Link href={'/'}>
           <p className="cursor-pointer">Home</p>
@@ -34,15 +36,15 @@ const Favorites = () => {
         <p> Favorites</p>
       </div>
       <h2 className="px-9 py-3 text-lg font-bold">FAVORITES</h2>
-      <div className="mb-32 min-w-[424px] overflow-scroll">
+      <div className="mb-32 min-w-[424px] overflow-y-hidden overflow-x-hidden">
         <div className="grid grid-cols-4 border border-b-slate-400 border-t-transparent bg-[#fafafa] py-3 px-9 font-bold text-[#505050]">
           <h4>IMAGE</h4>
           <h4>PRODUCT NAME</h4>
           <h4>PRICE</h4>
           <h4>REMOVE</h4>
         </div>
-        {favorites.map((item: Props) => (
-          <div key={item.name} className="grid grid-cols-4 items-center py-3 px-9 font-bold border-b-2">
+        {favorites.map((item: Props, key: number) => (
+          <div key={key} className="grid grid-cols-4 items-center py-3 px-9 font-bold border-b-2">
             <Link href={`/products/${item.name}`}>
               <div className="relative h-16 w-16 cursor-pointer">
                 <Image src={item.image} layout={'fill'} alt="product-image" />

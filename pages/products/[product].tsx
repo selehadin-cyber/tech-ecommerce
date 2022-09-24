@@ -14,12 +14,13 @@ import { ParsedUrlQuery } from 'querystring'
 import React, { useEffect, useState } from 'react'
 import { BsHeart } from 'react-icons/bs'
 import { database } from '../../config/firebase'
-import { useAuth } from '../../context/AuthContext'
+import { Context, useAuth } from '../../context/AuthContext'
 import { TextField } from '@mui/material'
 import Image from 'next/image'
 import Navbar from '../../components/navbar'
 import Link from 'next/link'
 import { Props } from '../../components/Product'
+import Login from '../../components/SignIn'
 
 interface IParams extends ParsedUrlQuery {
   product: string
@@ -68,7 +69,7 @@ const ProductPage: React.FC<PageProps> = ({ singleProduct }) => {
   const [title, setTitle] = useState('')
   const [review, setReview] = useState('review')
   const [writeReview, setWriteReview] = useState(false)
-  const { addFav, user, onAdd } = useAuth()
+  const { addFav, user, onAdd, showSignIn } = useAuth() as Context
   const [qty, setQty] = useState(1)
   const [reviewAdded, setReviewAdded] = useState(false)
   const [reviewProduct, setReviewProduct] = useState<PageProps>()
@@ -141,6 +142,7 @@ const ProductPage: React.FC<PageProps> = ({ singleProduct }) => {
   return (
     <>
       <Navbar />
+      {showSignIn ? <Login />: null}
       <div className="ultra-container px-5 w-full pt-20">
         <div className="flex py-7 text-[#808080]">
           <Link href={'/'}>

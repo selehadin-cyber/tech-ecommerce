@@ -3,7 +3,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { useAuth } from '../context/AuthContext'
+import MuiModal from '@mui/material/Modal'
+import { Context, useAuth } from '../context/AuthContext'
 
 
 interface Inputs {
@@ -14,7 +15,7 @@ interface Inputs {
 function Login() {
   const [login, setLogin] = useState(false);
 
-  const {user ,logIn, signUp, logOut, setShowSignIn} = useAuth();
+  const {user ,logIn, signUp, logOut, setShowSignIn, showSignIn} = useAuth() as Context;
   const {
     register,
     handleSubmit,
@@ -28,8 +29,13 @@ function Login() {
     }
   }
 
+  const handleClose = () => {
+    setShowSignIn(false)
+  }
+
   return (
-    <div className="absolute z-40 right-0 top-4 focus:flex flex-col md:items-center md:justify-center md:bg-transparent">
+    <MuiModal open={showSignIn} onClose={handleClose}>
+    <div className="absolute z-40 right-0 top-4 flex flex-col md:items-center md:justify-center md:bg-transparent">
     
       <form
         onSubmit={handleSubmit(onSubmit)}
@@ -82,6 +88,7 @@ function Login() {
         </div>
       </form>
     </div>
+    </MuiModal>
   )
 }
 
