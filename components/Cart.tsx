@@ -73,7 +73,7 @@ const Cart = () => {
               </>
             ) : null}
             {cart &&
-              cart.map((product: Cart, idx: number) => (
+              cart?.map((product: Cart, idx: number) => (
                 <>
                   <div key={idx} className="flex px-5">
                     <Link href={`/products/${product?.name}`} className="pr-8">
