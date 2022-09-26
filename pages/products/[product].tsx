@@ -222,6 +222,8 @@ const ProductPage: React.FC<PageProps> = ({ singleProduct }) => {
                 name="quantity"
                 value={qty}
                 type="number"
+                min={1}
+                max={99}
                 onChange={(e) => setQty(parseInt(e.target.value))}
               />
               <button

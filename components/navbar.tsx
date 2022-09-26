@@ -54,13 +54,13 @@ const Navbar = () => {
   }
 
   return (
-    <div className="absolute top-0 z-50 flex w-full flex-row items-center justify-between gap-5 bg-[#161880] p-2.5">
+    <div className="absolute top-0 z-50 flex w-full flex-row items-center justify-between gap-5 bg-[#161880] p-4">
       <Link href={'/'}>
         <div className="logo w-[110px] cursor-pointer p-2 md:w-[140px]">
           <Image src={logo} alt="logo" />
         </div>
       </Link>
-      <div className="input relative hidden md:flex">
+      <div className="input relative hidden md:flex md:items-center basis-[calc(44.6667%+20px)]">
         <input
           type="search"
           name="search"
@@ -69,9 +69,9 @@ const Navbar = () => {
           ref={wrapperRef}
           onChange={(e) => setSearch(e.target.value)}
           className="h-12 w-full rounded-full p-3 text-xs font-light outline-none md:h-12 md:text-lg"
-          placeholder="search the store"
+          placeholder="Search the store"
         />
-        <BsSearch size={23} className="absolute right-3 top-[23%]" />
+        <BsSearch size={20} className="absolute right-3" />
         <ul className='absolute flex flex-col top-[calc(100%+10px)] right-0 bg-white w-[246px]  rounded-md'>{display &&
         allProducts
           .filter(({ name }: {name: string} ) => name.toLowerCase().indexOf(search.toLowerCase()) > -1)
@@ -91,7 +91,7 @@ const Navbar = () => {
             </Link>
           ))}</ul>
       </div>
-      <div className="flex flex-row gap-5">
+      <div className="flex flex-row gap-5 basis-[21.3%] justify-end">
         <span className="hidden font-dmsans text-sm text-white md:text-lg">
           Available 24/7 at
           <br />
@@ -105,15 +105,15 @@ const Navbar = () => {
 
         <Link href={'/favorites'}>
           <div className="flex cursor-pointer flex-col items-center justify-center">
-            <BsHeart color="#fdc525" size="17px" />
-            <p className="font-dmsans text-sm text-white md:text-xl">
+            <BsHeart color="#fdc525" className='text-[17px] md:text-[28px]'/>
+            <p className="font-dmsans text-sm text-white md:text-sm whitespace-nowrap">
               Wish Lists {favorites.length}
             </p>
           </div>
         </Link>
         <div className="flex flex-col items-center justify-center">
-          <BsPerson color="#fdc525" size="17px" />
-          <p className="cursor-pointer font-dmsans text-sm text-white md:text-xl">
+          <BsPerson color="#fdc525" className='text-[17px] md:text-[28px]'/>
+          <p className="cursor-pointer font-dmsans text-sm text-white md:text-sm whitespace-nowrap">
             {user ? (
               <span onClick={logOut}>Sign Out</span>
             ) : (
@@ -128,12 +128,12 @@ const Navbar = () => {
           onClick={toggleDrawer('right', true)}
         >
           <button className="relative">
-            <BsCart3 color="#fdc525" size="17px" />
+            <BsCart3 color="#fdc525" className='text-[17px] md:text-[28px]'/>
             <span className="absolute -right-2 -top-1.5 h-4 w-4 rounded-full bg-[#0a6cdc] text-center text-[10px] font-semibold text-white">
               {totalQuantities}
             </span>
           </button>
-          <p className="font-dmsans text-sm text-white md:text-xl">Carts</p>
+          <p className="font-dmsans text-sm text-white md:text-sm">Carts</p>
         </div>
       </div>
       <Cart />

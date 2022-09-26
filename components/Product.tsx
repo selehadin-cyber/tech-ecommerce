@@ -33,6 +33,21 @@ const Product: React.FC<Props | any> = ({ productData }) => {
   const { onAdd } = useAuth()
   const [disabled, setDisabled] = useState(false)
 
+  const onAddToCart = (item: Props) => {
+    setDisabled(true)
+    onAdd(item, 1)
+    toast("Item added to Cart 👏!", {
+      duration: 1000,
+      style: {
+        background: "green",
+        color: "white",
+        fontWeight: "bolder",
+        fontSize: "17px",
+        padding: "20px",
+      },
+    })
+  }
+
   const addFav = async () => {
     // Atomically add a new region to the "regions" array field.
     
@@ -108,10 +123,9 @@ const Product: React.FC<Props | any> = ({ productData }) => {
       <div className="flex w-[240px] items-start justify-between">
         <button
           type="button"
-          className="mr-2 mb-2 w-[80%] rounded-full bg-blue-700 px-5 py-2.5 text-center font-dmsans text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          className="mr-2 mb-2 w-[80%] rounded-full bg-blue-700 px-5 py-2.5 text-center font-dmsans text-sm font-medium text-white hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           onClick={() => {
-            setDisabled(true)
-            onAdd(productData, 1)
+            onAddToCart(productData)
           }}
           disabled={false}
         >
