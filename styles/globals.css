@@ -14,3 +14,7 @@ body {
     position: absolute;
     bottom: 0;
   }
+  html, body {
+    position:relative;
+    overflow-x:hidden;
+  }

@@ -36,7 +36,7 @@ const Favorites = () => {
         <p> Favorites</p>
       </div>
       <h2 className="px-9 py-3 text-lg font-bold">FAVORITES</h2>
-      <div className="mb-32 min-w-[424px] overflow-y-hidden overflow-x-hidden">
+      <div className="mb-32 min-w-[424px] relative overflow-y-hidden overflow-x-hidden">
         <div className="grid grid-cols-4 border border-b-slate-400 border-t-transparent bg-[#fafafa] py-3 px-9 font-bold text-[#505050]">
           <h4>IMAGE</h4>
           <h4>PRODUCT NAME</h4>
