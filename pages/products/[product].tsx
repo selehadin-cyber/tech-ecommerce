@@ -21,6 +21,7 @@ import Navbar from '../../components/navbar'
 import Link from 'next/link'
 import { Props } from '../../components/Product'
 import Login from '../../components/SignIn'
+import { Toaster } from 'react-hot-toast'
 
 interface IParams extends ParsedUrlQuery {
   product: string
@@ -143,6 +144,7 @@ const ProductPage: React.FC<PageProps> = ({ singleProduct }) => {
     <>
       <Navbar />
       {showSignIn ? <Login />: null}
+      <Toaster position="bottom-center" />
       <div className="ultra-container px-5 w-full pt-20">
         <div className="flex py-7 text-[#808080]">
           <Link href={'/'}>

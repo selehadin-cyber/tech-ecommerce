@@ -18,6 +18,8 @@ import {
   updateDoc,
 } from 'firebase/firestore'
 import { useCollection } from 'react-firebase-hooks/firestore'
+import toast, { Toaster } from 'react-hot-toast'
+
 import { Props } from '../components/Product'
 
 type Anchor = "right"
@@ -132,15 +134,35 @@ export const AuthContextProvider = ({
 
   const addFav = async (productData: Props) => {
     // Atomically add a new region to the "regions" array field.
-    const usersRef = doc(database, 'user', user.uid)
-    await updateDoc(usersRef, {
-      fav: arrayUnion(productData),
-    })
-
-    // Atomically remove a region from the "regions" array field.
-    /* await updateDoc(usersRef, {
-      regions: arrayRemove('east_coast'),
-    }) */
+    
+    if (!user) {
+      //error message when a user tries to favorite an item with out loging in
+      toast('You need to sign in to favorite an item🤔', {
+        style: {
+          background: 'red',
+          color: 'white',
+          fontWeight: 'bolder',
+          fontSize: '17px',
+          padding: '20px',
+        },
+      })
+    } else {
+      const usersRef = doc(database, 'user', user.uid)
+      await updateDoc(usersRef, {
+        fav: arrayUnion(productData),
+      })
+      toast("Item added to favorites 👏!", {
+        duration: 1000,
+        style: {
+          background: "green",
+          color: "white",
+          fontWeight: "bolder",
+          fontSize: "17px",
+          padding: "20px",
+        },
+      });
+    }
+    setFavoriteClicked((prev: boolean) => !prev)
   }
 
   const toggleDrawer =

@@ -12,7 +12,7 @@ import {
 } from 'firebase/firestore'
 import toast, { Toaster } from 'react-hot-toast'
 
-import { useAuth } from '../context/AuthContext'
+import { Context, useAuth } from '../context/AuthContext'
 import { database } from '../config/firebase'
 import Link from 'next/link'
 import { Rating } from '@mui/material'
@@ -28,8 +28,8 @@ export type Props = {
 }
 
 const Product: React.FC<Props | any> = ({ productData }) => {
-  const { user, logIn, signUp, logOut, showSignIn, setFavoriteClicked } =
-    useAuth()
+  const { user, logIn, signUp, logOut, showSignIn, setFavoriteClicked, addFav } =
+    useAuth() as Context
   const { onAdd } = useAuth()
   const [disabled, setDisabled] = useState(false)
 
@@ -46,39 +46,6 @@ const Product: React.FC<Props | any> = ({ productData }) => {
         padding: "20px",
       },
     })
-  }
-
-  const addFav = async () => {
-    // Atomically add a new region to the "regions" array field.
-    
-    if (!user) {
-      //error message when a user tries to favorite an item with out loging in
-      toast('You need to sign in to favorite an item🤔', {
-        style: {
-          background: 'red',
-          color: 'white',
-          fontWeight: 'bolder',
-          fontSize: '17px',
-          padding: '20px',
-        },
-      })
-    } else {
-      const usersRef = doc(database, 'user', user.uid)
-      await updateDoc(usersRef, {
-        fav: arrayUnion(productData),
-      })
-      toast("Item added to favorites 👏!", {
-        duration: 1000,
-        style: {
-          background: "green",
-          color: "white",
-          fontWeight: "bolder",
-          fontSize: "17px",
-          padding: "20px",
-        },
-      });
-    }
-    setFavoriteClicked((prev: boolean) => !prev)
   }
 
   return (
@@ -132,7 +99,7 @@ const Product: React.FC<Props | any> = ({ productData }) => {
           Add to Cart
         </button>
         <button
-          onClick={addFav}
+          onClick={() => addFav(productData)}
           type="button"
           className="hidden h-10 w-10 rounded-full bg-gray-300 hover:bg-pink-500 group-hover:block"
         >
