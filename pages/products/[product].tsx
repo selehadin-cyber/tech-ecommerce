@@ -17,6 +17,7 @@ import { database } from '../../config/firebase'
 import { Context, useAuth } from '../../context/AuthContext'
 import { TextField } from '@mui/material'
 import Image from 'next/image'
+import ReactImageZoom from 'react-image-zoom';
 import Navbar from '../../components/navbar'
 import Link from 'next/link'
 import { Props } from '../../components/Product'
@@ -140,6 +141,8 @@ const ProductPage: React.FC<PageProps> = ({ singleProduct }) => {
     }) */
   }
 
+  const props = {width: 250 , height: 250, zoomWidth: 500, zoomPosition: "original"};
+
   return (
     <>
       <Navbar />
@@ -157,13 +160,8 @@ const ProductPage: React.FC<PageProps> = ({ singleProduct }) => {
         </div>
         <div className="super-container flex flex-wrap mb-8">
           <div className="left-container flex md:max-w-[calc(50%-10px)] w-full px-3 flex-col">
-            <div className="image-parent relative h-[250px] w-[100%]">
-              <Image
-                src={singleProduct?.imageArray[imageIndex] as string}
-                objectFit="contain"
-                layout="fill"
-                className="w-full hover:bg-pink-600 rounded-md"
-              />
+            <div className="image-parent relative h-[250px] w-[100%] flex justify-center overflow-hidden">
+              <ReactImageZoom {...{...props, img: singleProduct?.imageArray[imageIndex] as string}} />
             </div>
             <div className="small-images-container my-5 flex justify-center px-32">
               {singleProduct?.imageArray.map((item, i) => (
@@ -185,7 +183,7 @@ const ProductPage: React.FC<PageProps> = ({ singleProduct }) => {
             <h1 className="mb-5 text-left font-rubik text-[24px] font-bold">
               {singleProduct?.name}
             </h1>
-            <div className="flex font-thin mb-5">
+            <div className="flex font-thin mb-5 -z-10">
               <Rating name="read-only" value={singleProduct?.average} readOnly />
               <p className="pl-3 text-[#808080]">{singleProduct?.reviews.length} reviews</p>
             </div>
