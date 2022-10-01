@@ -35,23 +35,23 @@ function Login() {
 
   return (
     <MuiModal open={showSignIn} onClose={handleClose}>
-    <div className="absolute z-40 right-0 top-4 flex flex-col md:items-center md:justify-center md:bg-transparent">
+    <div className="w-fit mx-auto flex flex-col md:items-center md:justify-center md:bg-transparent">
     
       <form
         onSubmit={handleSubmit(onSubmit)}
         action=""
-        className="relative space-y-8 rounded bg-white px-6 md:mt-16 md:max-w-md md:px-14"
+        className="relative space-y-8 rounded bg-white p-3 md:mt-16 md:max-w-md md:p-7"
       >
         <h1 className="text-2xl font-semibold">Customer Login</h1>
-        <p>if you are already registered, please login.</p>
-        <div className="space-y-4">
+        
+        <div className="space-y-4 font-dmsans">
           <label htmlFor="" className="inline-block w-full">
               <p>E-mail</p>
             <input
               type="email"
               id=""
               placeholder="Email"
-              className="rounded-full h-6 md:h-10 md:text-lg text-xs outline-none border-2 w-52 p-3 font-light"
+              className="rounded-full h-10 mt-2 md:h-10 md:text-lg text-sm outline-none border-2 w-full p-3 font-light"
               {...register('email', { required: true })}
             />
             {errors.email && (
@@ -65,7 +65,7 @@ function Login() {
             <input
               type="password"
               placeholder="Password"
-              className="rounded-full h-6 md:h-10 md:text-lg text-xs outline-none border-2 w-52 p-3 font-light"
+              className="rounded-full h-10 mt-2 md:h-10 md:text-lg text-sm outline-none border-2 w-full p-3 font-light"
               {...register('password', { required: true })}
             />
             {errors.password && (
@@ -77,7 +77,7 @@ function Login() {
         </div>
         <button
           type="submit"
-          className="w-full rounded bg-[#0a6cdc] py-3 font-semibold"
+          className="w-full rounded-full bg-[#0a6cdc] py-3 font-semibold"
           onClick={() => {setLogin(true)}}
         >
           Sign In
