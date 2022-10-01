@@ -244,7 +244,7 @@ const ProductPage: React.FC<PageProps> = ({ singleProduct }) => {
           </div>
         </div>
 
-        <div className="review-section">
+        <div className="review-section mb-32">
           <h2 className="text-2xl font-bold">Customer Reviews</h2>
           <div className="flex items-center justify-start gap-3">
             <Rating name="read-only" value={4} readOnly />

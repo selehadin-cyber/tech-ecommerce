@@ -72,7 +72,7 @@ const Navbar = () => {
           placeholder="Search the store"
         />
         <BsSearch size={20} className="absolute right-3" />
-        <ul className='absolute flex flex-col top-[calc(100%+10px)] right-0 bg-white w-[246px]  rounded-md'>{display &&
+        <ul className='absolute flex flex-col top-[calc(100%+10px)] bg-white w-[246px]  rounded-md'>{display &&
         allProducts
           .filter(({ name }: {name: string} ) => name.toLowerCase().indexOf(search.toLowerCase()) > -1)
           .map((product: Product) => (
