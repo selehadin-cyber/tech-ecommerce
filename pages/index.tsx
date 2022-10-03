@@ -33,7 +33,7 @@ const Home: NextPage = () => {
         <meta
           name="image"
           property="og:image"
-          content="https://raw.githubusercontent.com/selehadin-cyber/tech-ecommerce/main/assets/screenshot.png"
+          content="https://raw.githubusercontent.com/selehadin-cyber/tech-ecommerce/main/assets/screenshot.png?"
         />
       </Head>
 
