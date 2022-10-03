@@ -18,6 +18,7 @@ const Home: NextPage = () => {
         <title>Ihsan store</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1"/>
         <meta property="og:type" content="website" />
+        <meta name="og:site_name" content="Ihsan Store"/>
         <meta property="og:title" content="IhsanStore ,Exellence through technology" />
         <meta
           name="description"
